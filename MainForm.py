@@ -46,6 +46,7 @@ import em
 import pca
 import svd
 
+import New_Column
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -78,18 +79,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
 
-        #TextEdit_Up
-        self.textEdit_Up = QtGui.QTextEdit(self.centralwidget)
-        self.textEdit_Up.setObjectName("textEdit_Up")
-        self.textEdit_Up.setLineWrapMode(QtGui.QTextEdit.NoWrap)
-        self.textEdit_Up.setReadOnly(True)
+        #dockWidget_DataSet
+        self.dockWidget_DataSet = QtGui.QDockWidget("Veri Seti")
+        self.dockWidget_DataSet.setObjectName("dockWidget_DataSet")
+        self.dockWidget_DataSet.setMinimumSize(QtCore.QSize(466, 125))
+        #self.dockWidget_DataSet.setLineWrapMode(QtGui.QTextEdit.NoWrap)
+        #self.dockWidget_DataSet.setReadOnly(True)
 
-        self.label1 = QtGui.QLabel(self.centralwidget)
-        self.label1.setObjectName("label1")
-        self.label1.setText("Veriseti: ")
-
-        self.gridLayout.addWidget(self.label1, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.textEdit_Up, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.dockWidget_DataSet, 1, 0, 1, 1)
 
         #TextEdit_Down
         self.textEdit_Down = QtGui.QTextEdit(self.centralwidget)
@@ -182,6 +179,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuData = QtGui.QMenu(self.menubar)
         self.menuData.setObjectName(_fromUtf8("menuData"))
 
+        self.menuTable = QtGui.QMenu(self.menubar)
+        self.menuTable.setObjectName(_fromUtf8("menuTable"))
+
         self.menuSiniflama = QtGui.QMenu(self.menubar)
         self.menuSiniflama.setObjectName(_fromUtf8("menuSiniflama"))
 
@@ -199,6 +199,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.menuPreprocessing = QtGui.QMenu(self.menubar)
         self.menuPreprocessing.setObjectName(_fromUtf8("menuProcessing"))
+
 
         MainWindow.setMenuBar(self.menubar)
 
@@ -241,6 +242,24 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.menuPreprocessing.addAction(self.actionPca)
         self.menuPreprocessing.addAction(self.actionSvd)
+
+        # Menu Table Actions
+        self.actionAddRow = QtGui.QAction(MainWindow)
+        self.actionAddRow.setObjectName(_fromUtf8("actionAddRow"))
+
+        self.actionDelRow = QtGui.QAction(MainWindow)
+        self.actionDelRow.setObjectName(_fromUtf8("actionDelRow"))
+
+        self.actionAddClm = QtGui.QAction(MainWindow)
+        self.actionAddClm.setObjectName(_fromUtf8("actionAddClm"))
+
+        self.actionDelClm = QtGui.QAction(MainWindow)
+        self.actionDelClm.setObjectName(_fromUtf8("actionDelClm"))
+
+        self.menuTable.addAction(self.actionAddRow)
+        self.menuTable.addAction(self.actionDelRow)
+        self.menuTable.addAction(self.actionAddClm)
+        self.menuTable.addAction(self.actionDelClm)
 
         # Menu Grafikler Actions
         self.actionPie_Chart = QtGui.QAction(MainWindow)
@@ -298,6 +317,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         # Adding All Actions to Menubar
         self.menubar.addAction(self.menuDosya.menuAction())
         self.menubar.addAction(self.menuData.menuAction())
+        self.menubar.addAction(self.menuTable.menuAction())
         self.menubar.addAction(self.menuSiniflama.menuAction())
         self.menubar.addAction(self.menuKumeleme.menuAction())
         self.menubar.addAction(self.menuPreprocessing.menuAction())
@@ -439,6 +459,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.actionSvd, QtCore.SIGNAL("triggered()"), self.CallSvd)
         #-------------END PreProcessing---------------------------#
 
+        #-----------------Table----------------------------#
+        self.connect(self.actionAddRow, QtCore.SIGNAL("triggered()"), self.Add_row)
+        self.connect(self.actionDelRow, QtCore.SIGNAL("triggered()"), self.Delete_row)
+        self.connect(self.actionAddClm, QtCore.SIGNAL("triggered()"), self.Add_clm)
+        self.connect(self.actionDelClm, QtCore.SIGNAL("triggered()"), self.Del_clm)
+        #-----------------End Table----------------------------#
+
         self.connect(self.actionNormalQuantiles, QtCore.SIGNAL("triggered()"), self.NormQuan)
         self.connect(self.actionNormalProbabilities, QtCore.SIGNAL("triggered()"), self.NormProbs)
         self.connect(self.actionPlotNormalDist, QtCore.SIGNAL("triggered()"), self.NormPlot)
@@ -478,27 +505,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
             return
 
         #datamizi olusturdugumuz tabloya aktarıp, layout'a yerlestirir
-        self.table = TableOperations.CreateTable(self.centralwidget, self.myDataSet.featureCount, self.myDataSet.lineCount, self.myDataSet.features)
-        self.gridLayout.addWidget(self.table, 1, 0, 1, 1)
-
-        self.add_row = QtGui.QPushButton(self.centralwidget)
-        self.add_row.setObjectName("add_row")
-        self.add_row.setText(u"Satır Ekle")
-        self.add_row.clicked.connect(self.Add_row)
-        self.gridLayout.addWidget(self.add_row, 0, 1)
-
-        self.delete_row = QtGui.QPushButton(self.centralwidget)
-        self.delete_row.setObjectName("del_row")
-        self.delete_row.setText(u"Satır Sil")
-        self.delete_row.clicked.connect(self.Delete_row)
-        self.gridLayout.addWidget(self.delete_row, 0, 2)
-        self.delete_row = QtGui.QPushButton(self.centralwidget)
-
-        self.add_clm = QtGui.QPushButton(self.centralwidget)
-        self.add_clm.setObjectName("add_column")
-        self.add_clm.setText(u"Sütun ekle")
-        self.add_clm.clicked.connect(self.Add_clm)
-        self.gridLayout.addWidget(self.add_clm, 1, 1)
+        self.table = TableOperations.CreateTable(self.centralwidget, self.myDataSet.featureCount,
+                                                 self.myDataSet.lineCount, self.myDataSet.features)
+        self.dockWidget_DataSet.setWidget(self.table)
 
         for row in range(0, self.myDataSet.featureCount):
 
@@ -506,7 +515,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
             for column in range(0, self.myDataSet.lineCount):
                 self.table.setItem(column, row, QtGui.QTableWidgetItem(str(featureData[column].value)))
 
-        self.col_count = self.myDataSet.lineCount
+        self.row_count = self.myDataSet.lineCount
+        self.col_count = self.myDataSet.featureCount
         self.WriteLog("Veriseti tablo seklinde gorsellendi")
 
         self.AddRecentFile()
@@ -516,10 +526,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.CheckLayoutGraphs()
 
     def Add_row(self):
-        self.myDataSet.lineCount += 1
-        self.table.setRowCount(self.myDataSet.lineCount)
-        for clm in range(0, self.myDataSet.featureCount):
-            self.table.setItem(self.myDataSet.lineCount-1, clm, QtGui.QTableWidgetItem(str('')))
+        self.row_count += 1
+        self.table.setRowCount(self.row_count)
+        for clm in range(0, self.col_count):
+            self.table.setItem(self.row_count-1, clm, QtGui.QTableWidgetItem(str('')))
 
     def Delete_row(self):
         items = sorted(set(index.row() for index in
@@ -529,12 +539,24 @@ class Ui_MainWindow(QtGui.QMainWindow):
         if items:
             for item in items:
                 self.table.removeRow(item)
-        self.myDataSet.lineCount -= len(items)
+        self.row_count -= len(items)
+        self.table.setRowCount(self.row_count)
 
     def Add_clm(self):
-        #self.table.insertColumn(1, "deneme")
-        #self.table.setHorizontalHeaderItem(self.myDataSet.featureCount, QtGui.QTableWidgetItem("Prueba"))
-        pass
+        items = self.CallAddColumn()
+        self.col_count += 1
+        self.table.insertColumn(self.col_count-1)
+        self.table.setHorizontalHeaderItem(self.col_count-1, QtGui.QTableWidgetItem(items[0]))
+
+    def Del_clm(self):
+        items = sorted(set(index.column() for index in
+                      self.table.selectedIndexes()))
+        items = items[::-1]
+        if items:
+            for item in items:
+                self.table.removeColumn(item)
+        self.col_count -= len(items)
+        self.table.setColumnCount(self.col_count)
 
     def SaveFile(self):
         
@@ -790,6 +812,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
         for i in range(ozellik_sayisi):
             self.WriteOutput(str(value[yer[i]]) + ' tekil değeri: ' + str(sList[i]))
 
+    def CallAddColumn(self):
+        items = []
+        dlg = StartDialogClm()
+        if dlg.exec_():
+            a = 0
+        items.append(dlg.title)
+        items.append(dlg.formul)
+        return items
 
 
 
@@ -835,7 +865,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteLog("Pie Chart basarili bir sekilde cizdirildi")
 
         except: # Exception e:
-            self.WriteLog("Pie Chart cizdirilemedi : " + e.message)
+            self.WriteLog("Pie Chart cizdirilemedi : ")
     
     ### BAR CHART ###
     def CallBarChart(self):
@@ -1377,6 +1407,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuSiniflama.setTitle(_translate("MainWindow", "Sınıflama", None))
         self.menuKumeleme.setTitle(_translate("MainWindow", "Kümeleme", None))
         self.menuPreprocessing.setTitle(_translate("MainWindow", "Ön işleme", None))
+        self.menuTable.setTitle(_translate("MainWindow", "Tablo", None))
         self.menuGrafikler.setTitle(_translate("MainWindow", "Grafikler", None))
         self.menuYardim.setTitle(_translate("MainWindow", "Yardım", None))
         self.menuDagilimlar.setTitle(_translate("MainWindow", "Dağılımlar", None))
@@ -1425,6 +1456,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.actionPca.setText(_translate("MainWindow", "PCA", None))
         self.actionSvd.setText(_translate("MainWindow", "SVD", None))
+
+        self.actionAddRow.setText(_translate("MainWindow", "Satır Ekle", None))
+        self.actionAddClm.setText(_translate("MainWindow", "Sütun Ekle", None))
+        self.actionDelRow.setText(_translate("MainWindow", "Satır Sil", None))
+        self.actionDelClm.setText(_translate("MainWindow", "Sütun Sil", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
@@ -1563,6 +1599,13 @@ class StartSvd(QtGui.QDialog, svd.SVD):
     def __init__(self, dataset, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self, dataset)
+
+
+class StartDialogClm(QtGui.QDialog, New_Column.Ui_Dialog):
+    def __init__(self, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self)
+
 
         ### MAIN ###
 if __name__ == "__main__":
