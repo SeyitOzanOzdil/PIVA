@@ -5,9 +5,13 @@ import os
 import datetime
 import time
 import shutil
+from PyQt4.QtGui import QTableWidgetItem
+from py_expression_eval import Parser
 
 from PyQt4 import QtCore, QtGui
+from tables import indexes
 
+import Parsero
 import FileOperations
 import TableOperations
 import Errors
@@ -31,7 +35,6 @@ import Dlg_T_Chi_Plot
 import Dlg_F_Quan
 import Dlg_F_Probs
 import Dlg_F_Plot
-
 import Dlg_AboutPIVA
 
 import webbrowser
@@ -547,6 +550,26 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.col_count += 1
         self.table.insertColumn(self.col_count-1)
         self.table.setHorizontalHeaderItem(self.col_count-1, QtGui.QTableWidgetItem(items[0]))
+        if items[1]:
+            parser = Parser()
+            expr = parser.parse(str(items[1]))
+            variables = []
+            indexes = []
+            variables = expr.variables()
+            print variables
+            for i in range(len(variables)):
+                for j in range(self.col_count):
+                    if variables[i] == self.table.horizontalHeaderItem(j).text():
+                        indexes.append(j)
+                        break
+            print indexes
+
+            dict = {}
+            for satir in range(self.row_count):
+                for vari in range(len(variables)):
+                    dict.update( {variables[vari]: self.table.item(satir,indexes[vari]).text()} )
+                #print Parsero.evaluate(str(items[1]), dict)
+                self.table.setItem(satir, self.col_count-1, QtGui.QTableWidgetItem(str(Parsero.evaluate(str(items[1]), dict))))
 
     def Del_clm(self):
         items = sorted(set(index.column() for index in
@@ -1593,6 +1616,7 @@ class StartPca(QtGui.QDialog, pca.PCA):
     def __init__(self, dataset, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self, dataset)
+
 
 
 class StartSvd(QtGui.QDialog, svd.SVD):
