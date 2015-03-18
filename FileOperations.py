@@ -140,26 +140,30 @@ def __InterpretCsvFile(self, filePath, hasFeatureLine, seperator, deleteBadData)
 
     return ourDataSet
 
-def CreateAndWriteFile(self, table, features): #line
+def CreateAndWriteFile(self, table, path):
+    print "hello"
     filters = [
         'CSV file (*.csv)',
         'TXT files (*.txt)',
     ]
-    try:
-        file, filter = QtGui.QFileDialog.getSaveFileNameAndFilter(self, "Dosya Yolu Seciniz", os.getcwd(),
-                                                                  ";;".join(filters))
+    if path:
+        strPath = path
+    else:
+        try:
+            strPath, filter = QtGui.QFileDialog.getSaveFileNameAndFilter(self, "Dosya Yolu Seciniz", os.getcwd(),
+                                                                      ";;".join(filters))
 
-    except Exception:
-        Errors.ShowWarningMsgBox(self, Exception.message)
+        except Exception:
+            Errors.ShowWarningMsgBox(self, Exception.message)
 
-    strPath = file
     if strPath.contains(".txt"):
         fptr = open(strPath, 'w')
-        for feature in features:
-            fptr.write(feature)
-            if feature != features[-1]:
+        for feature in range(table.columnCount()):
+            fptr.write(self.table.horizontalHeaderItem(feature).text())
+            if feature != table.columnCount()-1:
                 fptr.write(" ")
         fptr.write('\n')
+
         for row in range(table.rowCount()):
             for clm in range(table.columnCount()):
                 line = table.item(row, clm).text()
@@ -172,8 +176,8 @@ def CreateAndWriteFile(self, table, features): #line
     elif strPath.contains(".csv"):
         cs = csv.writer(open(strPath, "w"))
         pmt = []
-        for feature in features:
-            pmt.append(feature)
+        for feature in range(table.columnCount()):
+            pmt.append(self.table.horizontalHeaderItem(feature).text())
         cs.writerow(pmt)
         for row in range(table.rowCount()):
             tmp = []

@@ -436,7 +436,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.actionOpenFile_tb, QtCore.SIGNAL("triggered()"), lambda path = None: self.OpenFile(path))
         self.connect(self.actionSave, QtCore.SIGNAL("triggered()"), self.SaveFile)  
         self.connect(self.actionSave_tb, QtCore.SIGNAL("triggered()"), self.SaveFile)
-        self.connect(self.actionSaveAs, QtCore.SIGNAL("triggered()"), self.SaveFileAsTxt)
+        self.connect(self.actionSaveAs, QtCore.SIGNAL("triggered()"), self.SaveFileAs)
         
         self.connect(self.actionPie_Chart, QtCore.SIGNAL("triggered()"), self.CallPieChart)
         self.connect(self.actionBar_Chart, QtCore.SIGNAL("triggered()"), self.CallBarChart)
@@ -500,12 +500,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #---------------SLOTS-----------------------------#
 
     def OpenFile(self, path):
-
-        #Dosyamizi acarak, dataset nesnemizi olusturur
-        self.myDataSet, self.fileInfo = FileOperations.OpenNewFile(self, path)
-
-        if self.myDataSet == 0:
-            return
+        self.path = path
+        tmp = self.CreateDataSet()
+        if tmp == 0:
+            return 0
 
         #datamizi olusturdugumuz tabloya aktarıp, layout'a yerlestirir
         self.table = TableOperations.CreateTable(self.centralwidget, self.myDataSet.featureCount,
@@ -528,6 +526,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.CheckLayoutParams()
         self.CheckLayoutGraphs()
 
+    def CreateDataSet(self):
+        #Dosyamizi acarak, dataset nesnemizi olusturur
+        self.myDataSet, self.fileInfo = FileOperations.OpenNewFile(self, self.path)
+
+        if self.myDataSet == 0:
+            return 0
+        return 1
+
     def Add_row(self):
         self.row_count += 1
         self.table.setRowCount(self.row_count)
@@ -547,29 +553,36 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def Add_clm(self):
         items = self.CallAddColumn()
-        self.col_count += 1
-        self.table.insertColumn(self.col_count-1)
-        self.table.setHorizontalHeaderItem(self.col_count-1, QtGui.QTableWidgetItem(items[0]))
-        if items[1]:
-            parser = Parser()
-            expr = parser.parse(str(items[1]))
-            variables = []
-            indexes = []
-            variables = expr.variables()
-            print variables
-            for i in range(len(variables)):
-                for j in range(self.col_count):
-                    if variables[i] == self.table.horizontalHeaderItem(j).text():
-                        indexes.append(j)
-                        break
-            print indexes
+        if items[0]:
+            self.col_count += 1
+            self.table.insertColumn(self.col_count-1)
+            self.table.setHorizontalHeaderItem(self.col_count-1, QtGui.QTableWidgetItem(items[0]))
+            if items[1]:
+                try:
+                    parser = Parser()
+                    expr = parser.parse(str(items[1]))
+                    variables = []
+                    indexes = []
+                    variables = expr.variables()
+                    for i in range(len(variables)):
+                        for j in range(self.col_count):
+                            if variables[i] == self.table.horizontalHeaderItem(j).text():
+                                indexes.append(j)
+                                break
+                    dict = {}
+                    for satir in range(self.row_count):
+                        for vari in range(len(variables)):
+                            dict.update( {variables[vari]: self.table.item(satir,indexes[vari]).text()} )
+                        self.table.setItem(satir, self.col_count-1, QtGui.QTableWidgetItem(str(Parsero.evaluate(str(items[1]), dict))))
 
-            dict = {}
-            for satir in range(self.row_count):
-                for vari in range(len(variables)):
-                    dict.update( {variables[vari]: self.table.item(satir,indexes[vari]).text()} )
-                #print Parsero.evaluate(str(items[1]), dict)
-                self.table.setItem(satir, self.col_count-1, QtGui.QTableWidgetItem(str(Parsero.evaluate(str(items[1]), dict))))
+                except Exception:
+                    self.table.removeColumn(self.col_count)
+                    self.col_count -= 1
+                    self.table.setColumnCount(self.col_count)
+                    Errors.ShowWarningMsgBox(self, u"Formül Hatalı!")
+        else:
+            Errors.ShowWarningMsgBox(self, u"Sütun ismi giriniz!")
+
 
     def Del_clm(self):
         items = sorted(set(index.column() for index in
@@ -582,14 +595,18 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.table.setColumnCount(self.col_count)
 
     def SaveFile(self):
-        
-        self.SaveFileAsTxt()
-
-    def SaveFileAsTxt(self):
         try:
-            FileOperations.CreateAndWriteFile(self, self.table, self.myDataSet.features)#self.myDataSet.lines
+            FileOperations.CreateAndWriteFile(self, self.table, self.path)
+            #self.CreateDataSet()
         except Exception:
-            Errors.ShowWarningMsgBox(self, "Dataset bulunmamaktadir")
+            Errors.ShowWarningMsgBox(self, u"Kayıt Gerçekleşmedi")
+
+    def SaveFileAs(self):
+        try:
+            FileOperations.CreateAndWriteFile(self, self.table, None)#self.myDataSet.lines
+        except Exception:
+            Errors.ShowWarningMsgBox(self, u"Dataset bulunmamaktadır")
+
     # Parametrelerin yer alacagi layout ta
     # herhangi bir widget in olup olmadigini 
     # kontrol eder.
