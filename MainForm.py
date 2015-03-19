@@ -184,6 +184,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.menuTable = QtGui.QMenu(self.menubar)
         self.menuTable.setObjectName(_fromUtf8("menuTable"))
+        self.menuTable.setEnabled(False);
 
         self.menuSiniflama = QtGui.QMenu(self.menubar)
         self.menuSiniflama.setObjectName(_fromUtf8("menuSiniflama"))
@@ -505,6 +506,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         if tmp == 0:
             return 0
 
+        self.menuTable.setEnabled(True)
+
         #datamizi olusturdugumuz tabloya aktarıp, layout'a yerlestirir
         self.table = TableOperations.CreateTable(self.centralwidget, self.myDataSet.featureCount,
                                                  self.myDataSet.lineCount, self.myDataSet.features)
@@ -580,8 +583,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
                     self.col_count -= 1
                     self.table.setColumnCount(self.col_count)
                     Errors.ShowWarningMsgBox(self, u"Formül Hatalı!")
+                    self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
         else:
             Errors.ShowWarningMsgBox(self, u"Sütun ismi giriniz!")
+            self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
+
 
 
     def Del_clm(self):

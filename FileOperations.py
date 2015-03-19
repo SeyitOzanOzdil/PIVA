@@ -141,7 +141,6 @@ def __InterpretCsvFile(self, filePath, hasFeatureLine, seperator, deleteBadData)
     return ourDataSet
 
 def CreateAndWriteFile(self, table, path):
-    print "hello"
     filters = [
         'CSV file (*.csv)',
         'TXT files (*.txt)',
