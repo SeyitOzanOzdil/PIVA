@@ -497,7 +497,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.CheckRecentFiles()
-        self.initializeTable()
+        
         #---------------SLOTS-----------------------------#
 
 
