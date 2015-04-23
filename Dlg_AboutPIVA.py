@@ -31,7 +31,10 @@ class Ui_Dialog(object):
         self.pic.setPixmap(QtGui.QPixmap("resources/amb.png"))
         self.gridLayout.addWidget(self.pic, 0,0,1,1)
         self.txt = QtGui.QLabel(Dialog)
-        self.txt.setText("2014-All Rights Reserved \nDilara OZIRMAK \nSerdar GOKCEN \n\nVersion 1.0.0")
+        self.txt.setText("2014-All Rights Reserved "
+                         u"\n\nSeyit Ozan ÖZDİL \nYunus YILDIRIM \nVersion 2.0.0"
+                         "\n\n" + "*-*-*-*-*-*-*-*-*-*-*-*"
+                         "\n\nDilara OZIRMAK \nSerdar GOKCEN \n\nVersion 1.0.0")
         self.gridLayout.addWidget(self.txt, 1,0,1,1)
 
 

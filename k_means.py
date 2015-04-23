@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import math
-from mpl_toolkits.mplot3d import Axes3D
+
 import matplotlib.pyplot as plt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *

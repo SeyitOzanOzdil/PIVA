@@ -50,9 +50,9 @@ class Ui_HistogramParams(object):
 
     def retranslateUi(self, HistogramParams):
         HistogramParams.setWindowTitle(_translate("HistogramParams", "Dialog", None))
-        self.label.setText(_translate("HistogramParams", " Ozellik:", None))
-        self.pushButton.setText(_translate("HistogramParams", "GOSTER", None))
-        self.label_2.setText(_translate("HistogramParams", "Bin Sayisi:", None))
+        self.label.setText(_translate("HistogramParams", u" Özellik:", None))
+        self.pushButton.setText(_translate("HistogramParams", u"GÖSTER", None))
+        self.label_2.setText(_translate("HistogramParams", u"Bin Sayısı:", None))
 
 
     def GetChoosenFeature(self):
@@ -60,6 +60,7 @@ class Ui_HistogramParams(object):
         choosen = self.comboBox.currentText()
 
         return choosen
+
     def SetComboBox(self, features):
 
         self.comboBox.addItems(features)

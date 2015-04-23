@@ -36,6 +36,7 @@ import Dlg_F_Quan
 import Dlg_F_Probs
 import Dlg_F_Plot
 import Dlg_AboutPIVA
+import Dlg_Summaries
 
 import webbrowser
 
@@ -186,6 +187,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuTable.setObjectName(_fromUtf8("menuTable"))
         self.menuTable.setEnabled(False);
 
+        self.menuStatistic = QtGui.QMenu(self.menubar)
+        self.menuStatistic.setObjectName(_fromUtf8("menuStatistic"))
+
         self.menuSiniflama = QtGui.QMenu(self.menubar)
         self.menuSiniflama.setObjectName(_fromUtf8("menuSiniflama"))
 
@@ -265,6 +269,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuTable.addAction(self.actionAddClm)
         self.menuTable.addAction(self.actionDelClm)
 
+        # Menu Statistic Actions
+        self.actionMean = QtGui.QAction(MainWindow)
+        self.actionMean.setObjectName(_fromUtf8("actionMean"))
+
+        self.menuStatistic.addAction(self.actionMean)
+
         # Menu Grafikler Actions
         self.actionPie_Chart = QtGui.QAction(MainWindow)
         self.actionPie_Chart.setObjectName(_fromUtf8("actionPie_Chart"))
@@ -322,6 +332,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menubar.addAction(self.menuDosya.menuAction())
         self.menubar.addAction(self.menuData.menuAction())
         self.menubar.addAction(self.menuTable.menuAction())
+        self.menubar.addAction(self.menuStatistic.menuAction())
         self.menubar.addAction(self.menuSiniflama.menuAction())
         self.menubar.addAction(self.menuKumeleme.menuAction())
         self.menubar.addAction(self.menuPreprocessing.menuAction())
@@ -470,6 +481,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.actionDelClm, QtCore.SIGNAL("triggered()"), self.Del_clm)
         #-----------------End Table----------------------------#
 
+        #-----------------Statistic----------------------------#
+        self.connect(self.actionMean, QtCore.SIGNAL("triggered()"), self.Summaries)
+        #-----------------End Statistic----------------------------#
+
         self.connect(self.actionNormalQuantiles, QtCore.SIGNAL("triggered()"), self.NormQuan)
         self.connect(self.actionNormalProbabilities, QtCore.SIGNAL("triggered()"), self.NormProbs)
         self.connect(self.actionPlotNormalDist, QtCore.SIGNAL("triggered()"), self.NormPlot)
@@ -497,7 +512,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.CheckRecentFiles()
-        self.initializeTable()
+        
         #---------------SLOTS-----------------------------#
 
 
@@ -717,8 +732,30 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CallHelp(self):
 
         new = 2
-        url = "file:\\D:\PycharmProjects\proje\kume_yardım\dene.html"
+        url = "kume_yardım\dene.html"
         webbrowser.get().open(url, new=new)
+
+    def Summaries(self):
+        self.CheckLayoutParams()
+        try:
+            self.dlgSummaries = StartDlgSummaries(self.myDataSet)
+            self.SetDlgParamsTitle(u"İstatistiksel Özet Parametreleri")
+
+            self.gridLayout_Params.addWidget(self.dlgSummaries, 0, 0, 1, 1)
+            self.dlgSummaries.pushButton.clicked.connect(self.FindSummaries)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+
+    def FindSummaries(self):
+        self.clearOutput()
+        self.WriteLog("İstatistiksel özetler hesaplanıyor..")
+        try:
+            self.WriteOutput(self.dlgSummaries.istatistikHesapla())
+            self.WriteLog("İstatistiksel özetler başarılı bir şekilde hesaplandı.")
+        except Exception, e:
+            self.WriteLog("Özetler Hesaplanamadı: " + e.message)
+
 
     def CallKmeans(self):
         self.CheckLayoutParams()
@@ -867,7 +904,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         items.append(dlg.title)
         items.append(dlg.formul)
         return items
-
 
 
     ### PIE CHART ###
@@ -1047,7 +1083,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
             self.gridLayout_Params.addWidget(self.dlg, 0, 0, 1, 1)
             self.SetDlgParamsTitle("Histogram Parametreleri")
-
             self.connect(self.dlg.pushButton, QtCore.SIGNAL("clicked()"), self.CreateHistogram)
 
         except:
@@ -1056,23 +1091,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CreateHistogram(self):
         
         self.WriteLog("Histogram cizdiriliyor..")
-
         numeric = str(self.dlg.comboBox.currentText())
-        
         values = list()
-
         binCount = self.dlg.GetBinCount()
 
         for val in self.myDataSet.dataSetDic[numeric]:
-
             values.append(val.value)
         try:
             self.main_frame = ChartCreator.CreateHistogram(values, binCount)
-
             self.CheckLayoutGraphs()
-
             self.gridLayout_Graphs.addWidget(self.main_frame, 0, 0, 1, 1)
-
             self.WriteLog("Histogram basarili bir sekilde cizdirildi")
         except Exception, e:
             self.WriteLog("Histogram cizdirilemedi: " + e.message)
@@ -1455,6 +1483,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuKumeleme.setTitle(_translate("MainWindow", "Kümeleme", None))
         self.menuPreprocessing.setTitle(_translate("MainWindow", "Ön işleme", None))
         self.menuTable.setTitle(_translate("MainWindow", "Tablo", None))
+        self.menuStatistic.setTitle(_translate("MainWindow", "İstatistik", None))
         self.menuGrafikler.setTitle(_translate("MainWindow", "Grafikler", None))
         self.menuYardim.setTitle(_translate("MainWindow", "Yardım", None))
         self.menuDagilimlar.setTitle(_translate("MainWindow", "Dağılımlar", None))
@@ -1508,6 +1537,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionAddClm.setText(_translate("MainWindow", "Sütun Ekle", None))
         self.actionDelRow.setText(_translate("MainWindow", "Satır Sil", None))
         self.actionDelClm.setText(_translate("MainWindow", "Sütun Sil", None))
+
+        self.actionMean.setText(_translate("MainWindow", "Summaries", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
@@ -1618,7 +1649,6 @@ class StartHiearachy(QtGui.QDialog, hierarchical.Hierarchical):
         self.setupUi(self, dataset)
 
 
-
 class StartDbscan(QtGui.QDialog, dbscan.DBS):
     def __init__(self, dataset, parent = None):
         QtGui.QDialog.__init__(self, parent)
@@ -1654,6 +1684,11 @@ class StartDialogClm(QtGui.QDialog, New_Column.Ui_Dialog):
         QtGui.QDialog.__init__(self,parent)
         self.setupUi(self)
 
+
+class StartDlgSummaries(QtGui.QDialog, Dlg_Summaries.Ui_SummariesParams):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
 
         ### MAIN ###
 if __name__ == "__main__":
