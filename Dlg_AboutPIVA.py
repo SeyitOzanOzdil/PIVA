@@ -37,7 +37,6 @@ class Ui_Dialog(object):
                          "\n\nDilara OZIRMAK \nSerdar GOKCEN \n\nVersion 1.0.0")
         self.gridLayout.addWidget(self.txt, 1,0,1,1)
 
-
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
