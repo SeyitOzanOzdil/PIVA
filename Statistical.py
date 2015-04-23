@@ -17,6 +17,9 @@ def standardDeviation(list):
 def variance(list):
     return numpy.var(list)
 
+def quantiles(list, yuzde):
+    return numpy.percentile(list, yuzde)
+
 def coVariance(list1, list2):
     return numpy.cov(list1, list2)[0][1]
 

@@ -32,7 +32,8 @@ class Ui_SummariesParams(object):
         groupBox.setFlat(True)
         vbox = QVBoxLayout()
         if amac.find(u"Sütun") == -1:
-            self.data = ["Mean", "Median", "Ortalama", "Standard Deviation", "Variance", "Co-Variance", "Correlation"]
+            self.data = ["Mean", "Median", "Ortalama", "Standard Deviation", "Variance",
+                         "Quantiles", "Co-Variance", "Correlation"]
 
         for i in self.data:
             cb = fonk(i)
@@ -76,6 +77,12 @@ class Ui_SummariesParams(object):
                 self.result += "      Minimum : " + str(Statistical.minimum(values)) + "\n"
                 self.result += "      Maximum : " + str(Statistical.maximum(values)) + "\n"
                 for stat in self.listStatistic:
+                    if str(stat) == 'Quantiles':
+                        self.result += "      Quantiles : \n\t%25 : "+ str(Statistical.quantiles(values,25)) +\
+                                       "\n\t%50 : "+ str(Statistical.quantiles(values,50)) +\
+                                       "\n\t%75 : "+ str(Statistical.quantiles(values,75)) +\
+                                       "\n\tIQR  : "+ str(Statistical.quantiles(values,75)-Statistical.quantiles(values,25))\
+                                       +"\n"
                     if str(stat) == 'Mean':
                         self.result += "      Mean : " + str(Statistical.mean(values)) + "\n"
                     if str(stat) == 'Median':
@@ -86,6 +93,7 @@ class Ui_SummariesParams(object):
                       self.result += "      Standard Deviation : " + str(Statistical.standardDeviation(values)) + "\n"
                     if str(stat) == 'Variance':
                         self.result += "      Variance : " + str(Statistical.variance(values)) + "\n"
+
                 self.result += "\n"
                 
             if ('Co-Variance' in self.listStatistic or 'Correlation' in self.listStatistic):
