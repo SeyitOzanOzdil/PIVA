@@ -604,8 +604,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
             Errors.ShowWarningMsgBox(self, u"Sütun ismi giriniz!")
             self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
 
-
-
     def Del_clm(self):
         items = sorted(set(index.column() for index in
                       self.table.selectedIndexes()))
@@ -619,13 +617,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def SaveFile(self):
         try:
             FileOperations.CreateAndWriteFile(self, self.table, self.path)
-            #self.CreateDataSet()
+            self.CreateDataSet()
         except Exception:
             Errors.ShowWarningMsgBox(self, u"Kayıt Gerçekleşmedi")
 
     def SaveFileAs(self):
         try:
             FileOperations.CreateAndWriteFile(self, self.table, None)#self.myDataSet.lines
+            self.CreateDataSet()
         except Exception:
             Errors.ShowWarningMsgBox(self, u"Dataset bulunmamaktadır")
 
