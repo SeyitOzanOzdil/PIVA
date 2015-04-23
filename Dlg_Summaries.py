@@ -87,7 +87,7 @@ class Ui_SummariesParams(object):
                     if str(stat) == 'Variance':
                         self.result += "      Variance : " + str(Statistical.variance(values)) + "\n"
                 self.result += "\n"
-
+                
             if ('Co-Variance' in self.listStatistic or 'Correlation' in self.listStatistic):
                 if len(self.listEleman) == 2:
                     list1 = list()
