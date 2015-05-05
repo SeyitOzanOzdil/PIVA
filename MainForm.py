@@ -710,6 +710,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.OpenFile(filePath)
 
         self.WriteLog(file+" Dosyasi basariyla yuklendi")
+        self.textEdit_Down.setText("")
 
     def CallAboutPiva(self):
 
@@ -726,6 +727,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             "OrnekVeri"))
 
         self.OpenFile(fileInfo.filePath())
+        self.textEdit_Down.setText("")
 
 
     def CallHelp(self):
