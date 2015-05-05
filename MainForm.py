@@ -731,8 +731,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CallHelp(self):
 
         new = 2
-        url = "kume_yardım\dene.html"
-        webbrowser.get().open(url, new=new)
+        url = "file://"+os.path.join(os.getcwd(), "kume_yardım/dene.html")
+
+        webbrowser.open(url,new=new)
 
     def Summaries(self):
         self.CheckLayoutParams()
