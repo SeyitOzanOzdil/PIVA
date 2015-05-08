@@ -733,7 +733,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CallHelp(self):
 
         new = 2
-        url = "file://"+os.path.join(os.getcwd(), "kume_yardım/dene.html")
+        url = "file://"+os.path.join(os.getcwd(), "HelpFiles/T-Test.html")
 
         webbrowser.open(url,new=new)
 
