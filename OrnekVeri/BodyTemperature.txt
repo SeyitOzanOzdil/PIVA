@@ -1,4 +1,4 @@
-Gender Age HeartRate Temperature Deneme
+Gender Age HeartRate Temperature Pulse
 M 33.0 69.0 97.0 102.0
 M 32.0 72.0 98.8 104.0
 M 42.0 68.0 96.2 110.0
