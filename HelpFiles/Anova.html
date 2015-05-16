@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>T-testi</title>
+  </head>
+  
+  <body>
+      <DIV style="PADDING-LEFT: 5px">
+		 <center><h1>ANOVA(ANalysis Of VAriances) Nedir?</h1></center>
+		 <h3>ANOVA Testi:</h3> 
+<p><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Varyans Analizi</b> (veya <b>ANOVA</b>, İngilizce <b>AN</b>alysis <b>O</b>f <b>VA</b>riance sözcüklerinin kısaltması) istatistik bilim dalında, 
+grup ortalamaları ve (gruplar içi ve gruplar arası varyasyon gibi) bunlara bağlı olan işlemleri analiz etmek için kullanılan bir 
+istatistiksel modeller koleksiyonudur. Varyans Analizi kullanılmaktayken belirlenmiş bir değikenin gözümlenen varyansı farklı 
+değişim kaynaklarına dayandırılabilen varyans bileşenine ayrılır. En basit şekliyle "Varyans Analizi" birkaç grubun ortalamalarının
+ birbirine eşit mi eşit değil mi olduğunu sınamak için bir çıkartımsal istatistik sınaması olur ve bu sınama iki-grup için yapılan
+  t-test sınamasını çoklu-gruplar için genelleştirir. Eğer, çoklu değişkenli analiz için birbiri arkasından çoklu 
+  iki-örneklemli-t-sınaması yapmak istenirse bunun I. tip hata yapma olasığını artırma sonucu doğurduğu aşikardır. Bu nedenle, 
+  üç veya daha fazla sayıda (gruplar için veya değişkenler için) ortalamaların ististiksel anlamlığının sınama ile karşılaştırılması 
+  için Varyans Analizleri daha faydalı olacağı gerçeği ortaya çıkmaktadır.</p>
+
+<p>Kisacası, ANOVA bir parametrik çıkarımsal metodu olup anakütle ortalamaları arasında farkın olup olmadığını sınamak için kullanılir. 
+Örneğin, 'Opel ile Toyota marka araçların benzin tüketim ortalamaları aynıdır' H0 hipotezinin sınaması yapılır. Sonuç, "ortalamalar 
+aynıdır" veya "ortalamalar ayni değildir" şeklinde çıkartılır. Bu analizdeki iki değişken arasında lineer bağlantı icin (regresyon 
+analizinde yapıldığı gibi) herhangi bir eğim katsayısı bulunmadığı kabul edilir. ANOVA analizi yapılabilmesi için en temel şart, 
+ortalamaları incelenecek olan anakütlelerin varyanslarının aynı olmasıdır.</p>
+
+<p>Bu yöntem ilk defa İngiliz istatistikçi ve genetikçi Ronald Fisher tarafından 1920'lı ve 1930'lu yıllarda geliştirilmiştir. 
+Genel olarak istatistiksel anlamlılık sınamaları içinde F-dağılımını kullanmaları ile karakterize edildikleri için bazan bu analize 
+Fisher'in varyans analizi adı da verilmektedir.</p>
+
+"Varyans Analizi" deneysel verilerin analiz edilmesi için özellikle pratikte çok defa kullanılan özel bir istatistikel hipotez 
+sınama şeklidir. Istatistiksel hipotez sınaması bir veriler kullanarak karar verme yöntemidir. Bir örneklem ve sıfır(null) hipotezden 
+hesaplanmış sınama sonucunun istatistiksel anlamsal olduğunu bildirmek bu sonucun (sıfır hipotezin doğru olduğu kabul edilirse) 
+şans eseri olarak ortaya çıkkmasının pek olası olmadığını bildirmek ve kabul etmektir. (Eğer bir olasılık p-değeri bir anlamlılık 
+seviyesi eşik değerinden daha düşük ise) bir istatistiksel anlamlı sonuç sıfır hipotez'in rededilmesini haklı çıkartır.
+
+<b><h3>ANOVA’nın t-testlerinden Farkı I
+</h3></b>
+<ul>
+    <li>Niye gruplar arasındaki bütün kombinasyonları test etmek için t testi yapmıyoruz da ANOVA yapıyoruz?</li>
+    <li>t-testleri ikiden fazla grupta da kullanılabilir ama her testin kendine özgü Tür 1 (yani doğru olduğu halde yanlışlıkla boş hipotezi reddetme olasılığı) hata olasılığı var, </li>
+    <li>Örneğin, t-testini 3 grup için 1-2, 1-3, 2-3 grupları için ayrı ayrı yaptığımızı varsayalım ve her testin Tür 1 hatası yapmama olasılığı 0,95 olsun, </li>
+    <li>Üç ayrı t-testinde Tür 1 hatası yapmama olasılığı 0,857’ye düşür (0,95 * 0,95 * 0,95 = 0,857)</li>
+    <li>Yani Tür 1 hatası yapma olasılığı 0,05’ten 0,143’e yükselir (1 - 0,857 = 0,143)</li>
+    <li>Bu, kabul edilemez.</li>
+    <li>Ya grup sayısı 3 yerine 5 olsaydı? O zaman 10 t-testi yapmak gerekecek ve hata olasılığı 0,40’a yükselecekti.! </li>
+</ul> 
+
+<b><h3>ANOVA’nın t-testlerinden Farkı II
+</h3></b>
+
+<ul>
+    <li>t-testi iki örneklemin ortalamalarının eşit olup olmadığı hipotezini test eder.</li>
+    <li>ANOVA ise üç ya da daha fazla ortalamanın eşit olup olmadığını test eder.</li>
+    <li>ANOVA F istatistiğini verir. F, verilerdeki sistematik varyans miktarını sistematik olmayan varyansla karşılaştırır.</li>
+    <li>ANOVA gruplar arasında fark olup olmadığını ya da deneysel uyarıcının başarılı olup olmadığını söyler (ör., üç grup ortalamasının eşit olmaması) ama farkın hangi gruplar arasında olduğunu ya da hangi grupların etkilendiğini söylemez (üç ortalama da farklı olabilir, ilk ikisi aynı, üçüncüsü farklı olabilir, ilki farklı, ikinci ve üçüncüsü aynı olabilir vs. vs.)</li>
+</ul> 
+
+<b><br><h3> ANOVA Table </h3></b>
+ANOVA testi sırasında, sonuca ulaşmada kullanılan değerlerin nasıl hesaplandığını gösteren tablo şekilde verilmiştir.
+<br><br><img src="pics/anova-table.JPG" width="736" height="518"  title="Anova Tablosu" /><br><br>
+
+Bulunan F değerine göre Hipotez testinin doğruluğu test edilir.
+  </body>
+</html>

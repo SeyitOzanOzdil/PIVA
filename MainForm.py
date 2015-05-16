@@ -118,7 +118,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.dockWidget_Params)
 
         #DockWidget_LogScreen
-        self.dockWidget_LogScreen = QtGui.QDockWidget("Log Ekrani")
+        self.dockWidget_LogScreen = QtGui.QDockWidget(u"Log Ekranı")
         self.dockWidget_LogScreen.setMaximumSize(QtCore.QSize(524287, 130))
         self.dockWidget_LogScreen.setObjectName(_fromUtf8("dockWidget_LogScreen"))
         self.dockWidgetContents_11 = QtGui.QWidget()
@@ -558,6 +558,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.table.setRowCount(self.row_count)
         for clm in range(0, self.col_count):
             self.table.setItem(self.row_count-1, clm, QtGui.QTableWidgetItem(str('')))
+        self.WriteLog("Bir satır eklendi.")
 
     def Delete_row(self):
         items = sorted(set(index.row() for index in
@@ -569,6 +570,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.table.removeRow(item)
         self.row_count -= len(items)
         self.table.setRowCount(self.row_count)
+        self.WriteLog("Seçili satır/satırlar başarılı bir şekilde silindi.")
 
     def Add_clm(self):
         items = self.CallAddColumn()
@@ -600,9 +602,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                     self.table.setColumnCount(self.col_count)
                     Errors.ShowWarningMsgBox(self, u"Formül Hatalı!")
                     self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
+            self.WriteLog(str(items[0]) + " isimli sütun başarılı bir şekilde eklendi.")
         else:
             Errors.ShowWarningMsgBox(self, u"Sütun ismi giriniz!")
-            self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
+            #self.Add_clm() # formulun yanlis girilmesi durumunda tekrar sutun ekleme ekrani acilir
 
     def Del_clm(self):
         items = sorted(set(index.column() for index in
@@ -613,6 +616,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.table.removeColumn(item)
         self.col_count -= len(items)
         self.table.setColumnCount(self.col_count)
+        self.WriteLog("Seçili sütun/sütunlar başarılı bir şekilde silindi.")
 
     def SaveFile(self):
         try:
@@ -733,7 +737,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CallHelp(self):
 
         new = 2
-        url = "file://"+os.path.join(os.getcwd(), "HelpFiles/T-Test.html")
+        url = "file://"+os.path.join(os.getcwd(), "HelpFiles/index.html")
 
         webbrowser.open(url,new=new)
 
@@ -764,6 +768,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             self.km = StartKmeans(self.myDataSet)
             self.gridLayout_Params.addWidget(self.km, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"K-Means Parametreleri")
             self.km.OkButton.clicked.connect(self.kmeansout)
         except:
              Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -783,6 +788,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             self.kmd = StartKmedoids(self.myDataSet)
             self.gridLayout_Params.addWidget(self.kmd, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"K-Medoids Parametreleri")
             self.kmd.OkButton.clicked.connect(self.kmedoidsout)
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -801,6 +807,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             fz = StartFuzzy(self.myDataSet)
             self.gridLayout_Params.addWidget(fz, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"Fuzzy C-Means Parametreleri")
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -810,6 +817,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             hier = StartHiearachy(self.myDataSet)
             self.gridLayout_Params.addWidget(hier, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"Hiyerarşik Parametreleri")
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -819,6 +827,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             dbs = StartDbscan(self.myDataSet)
             self.gridLayout_Params.addWidget(dbs, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"DBSCAN Parametreleri")
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -828,6 +837,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             som = StartSom(self.myDataSet)
             self.gridLayout_Params.addWidget(som, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"SOM Parametreleri")
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -837,6 +847,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             em = StartEm(self.myDataSet)
             self.gridLayout_Params.addWidget(em, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"EM Parametreleri")
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -846,6 +857,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             self.pca = StartPca(self.myDataSet)
             self.gridLayout_Params.addWidget(self.pca, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"PCA Parametreleri")
             self.pca.OkButton.clicked.connect(self.pcaOut)
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -876,6 +888,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             self.svd = StartSvd(self.myDataSet)
             self.gridLayout_Params.addWidget(self.svd, 0, 0, 1, 1)
+            self.SetDlgParamsTitle(u"SVD Parametreleri")
             self.svd.OkButton.clicked.connect(self.svdOut)
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -1540,7 +1553,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDelRow.setText(_translate("MainWindow", "Satır Sil", None))
         self.actionDelClm.setText(_translate("MainWindow", "Sütun Sil", None))
 
-        self.actionMean.setText(_translate("MainWindow", "Summaries", None))
+        self.actionMean.setText(_translate("MainWindow", "Özet", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
