@@ -189,7 +189,6 @@ def CreateAndWriteFile(self, table, path):
     self.WriteLog("Yazilan dosya yolu: " + strPath)
 
 
-
 class StartDialog(QtGui.QDialog, Ui_Dialog):
     def __init__(self, parent = None):
         QtGui.QDialog.__init__(self,parent)

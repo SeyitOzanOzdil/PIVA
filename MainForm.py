@@ -51,6 +51,7 @@ import pca
 import svd
 
 import New_Column
+import MissingValue
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -620,6 +621,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def SaveFile(self):
         try:
+            self.MissingValueControl()
             FileOperations.CreateAndWriteFile(self, self.table, self.path)
             self.CreateDataSet()
         except Exception:
@@ -627,10 +629,62 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def SaveFileAs(self):
         try:
+            self.MissingValueControl()
             FileOperations.CreateAndWriteFile(self, self.table, None)#self.myDataSet.lines
             self.CreateDataSet()
         except Exception:
             Errors.ShowWarningMsgBox(self, u"Dataset bulunmamaktadır")
+
+    def MissingValueControl(self):
+        for row in range(self.table.rowCount()):
+            for clm in range(self.table.columnCount()):
+                line = self.table.item(row, clm).text()
+                if line == '':
+                    self.yontem = self.CallMissingValue()
+                    break
+            if line == '':
+                break
+        if self.yontem == "Tahmin et":
+            dict = {}
+            for clm in range(self.table.columnCount()):
+                total = 0
+                counter = 0
+                for row in range(self.table.rowCount()):
+                    line = str(self.table.item(row, clm).text())
+                    if line != '':
+                        try:
+                           total += float(line)
+                           counter += 1
+                        except ValueError:
+                           pass
+                if counter == 0:
+                    total = 0
+                else:
+                    total = float(total)/float(counter)
+                total = "%.2f" % total
+                dict[str(self.table.horizontalHeaderItem(clm).text())] = total
+
+            for clm in range(self.table.columnCount()):
+                for row in range(self.table.rowCount()):
+                    line = str(self.table.item(row, clm).text())
+                    if line == '':
+                        self.table.setItem(row, clm, QtGui.QTableWidgetItem(str(dict[str(self.table.horizontalHeaderItem(clm).text())])))
+
+        elif self.yontem == "0 (Sıfır) ile Doldur":
+            #self.table.setItem(row, clm, QtGui.QTableWidgetItem(str('0')))
+            for row in range(self.table.rowCount()):
+                for clm in range(self.table.columnCount()):
+                    line = self.table.item(row, clm).text()
+                    if line == '':
+                        self.table.setItem(row, clm, QtGui.QTableWidgetItem(str('0.0')))
+
+
+    def CallMissingValue(self):
+        dlg = StartDialogMissing()
+        if dlg.exec_():
+            a = 0
+        return dlg.yontem
+
 
     # Parametrelerin yer alacagi layout ta
     # herhangi bir widget in olup olmadigini 
@@ -1695,6 +1749,12 @@ class StartSvd(QtGui.QDialog, svd.SVD):
 
 
 class StartDialogClm(QtGui.QDialog, New_Column.Ui_Dialog):
+    def __init__(self, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self)
+
+
+class StartDialogMissing(QtGui.QDialog, MissingValue.Ui_Form):
     def __init__(self, parent = None):
         QtGui.QDialog.__init__(self,parent)
         self.setupUi(self)

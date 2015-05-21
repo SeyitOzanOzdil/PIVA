@@ -9,28 +9,386 @@
       <DIV style="PADDING-LEFT: 5px">
 		 <center><h1>Ön İşleme Menüsü</h1></center>
 		 <h3>Ön İşleme Menüsü:</h3> 
-	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu menünün altında bulunan kısımlarda
-	 	  <br>
+	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu menünün altında bulunan kısımlarda eldeki aktif veriseti üstünde bazı ön işleme metodları
+	 uygulanabilir. Bu ön işleme metodları ile boyut indirgeme işlemleri yapılabilir. PIVA'da bu işlemler için kullanılabilecek
+	 iki altmenü bulunmaktadır. Bunlar aşağıdaki resimde gösterilmiştir. 
+	 	  <br><br>
           <div align="center"> <img src="pics/menu_onisleme.png" width="86" height="72" alt="" title="Ön İşleme Menüsü" />
           </div> <br>
-	 <b>PCA:</b> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu altmenüyle, 
+	 <b>PCA:</b> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu altmenüyle, boyut indirgeme işlemi için <b>PCA (Principal Component Analysis)</b>
+	  istatistik işlemi kullanılabilir. Türkçesi <b>Temel Bileşenler Analizi</b> olan PCA, tanıma, sınıflandırma, görüntü sıkıştırma alanlarında 
+	  kullanılan yararlı bir istatistiksel tekniktir. PCA verideki gerekli bilgileri ortaya çıkarmada oldukça etkili bir yöntemdir. 
+	  Fazla boyutlu verilerdeki genel özellikleri bularak boyut sayısının azaltılmasını, verinin sıkıştırılmasını sağlar. 
+	  PCA’in arkasında yatan temel mantık çok boyutlu bir veriyi, verideki temel özellikleri yakalayarak daha az sayıda değişkenle
+	   göstermektir. Boyut azalmasıyla bazı özelliklerin kaybedileceği kesindir; fakat amaçlanan, bu kaybolan özelliklerin popülasyon
+	    hakkında çok az bilgi içeriyor olmasıdır. 
 	 
 	 
-	 <br>	Kullanımına bakacak olursak;<br>
+	 <br><br>	Kullanımına bakacak olursak;<br><br>
 	&nbsp;&nbsp;&nbsp;&nbsp; PIVA'nın <b>Ön İşleme</b> menüsünden <b>PCA</b> altmenüsüne tıklandığı zaman ekranın <b>Parametreler</b>
-	 için ayarlanan	alanına Pie chart'ı oluşturmak için gereken parametreleri kullanıcıdan alan ekran gelecektir.
+	 için ayarlanan	alanına PCA için gereken parametreleri kullanıcıdan alan ekran gelecektir.
 	<br><br><div align="center"> <img src="pics/onisleme_pca1.JPG" width="467" height="342" alt="" title="PCA" /> </div>
 	<br>
+	 Boyutunu indirgemek istediğimiz kolonları seçtikten sonra istenilen <b>eşik seviyesi (threshold)</b> girilir. Eğer elde edilen sonuçlar
+	 bir rapor halinde kayıt edilmek istenirse <b>Raporu Kaydet</b> kutucuğu işaretlenerek dosya konumu seçilebilir. Gerekli 
+	 parametrik ayarlamalar yapıldıktan sonra <b>Tamam</b> butonuyla işlemler yürütülüp, sonuçlar <b>Çıktı</b> ekranından alınabilir. 
+	 Aşağıda örnek olarak eldeki verisetinden <b>Age</b> ve <b>Temperature</b> özellikleri seçilmiş ve eşik değeri olarak da <b>33</b>
+	 değeri girilmiş ve sonuçları aşağıda gösterilmiştir.  
+<pre  style="font-family:arial;font-size:12px;border:1px dashed #CCCCCC;width:99%;height:auto;overflow:auto;background:#f0f0f0;;;padding:0px;color:#000000;text-align:left;line-height:20px;"><code style="color:#000000;word-wrap:normal;">
+Kovaryans matrisi: 
+[[ 41.34909091  -0.81272727]
+ [ -0.81272727   0.91565657]]
+
+Eigenvalue(özdeğer) 
+
+Age: 41.3654204388
+Temperature: 0.899327035974
+
+Seçilen özellik sayısı: 2
+
+Seçilen özellik: Age
+Seçilen özellik: Temperature
+
+Son veri: 
+[[ -4.59235042e+00  -1.42253914e+00]
+ [ -5.62830741e+00   3.57009430e-01]
+ [  4.42190405e+00  -2.04158384e+00]
+ [ -4.60842099e+00  -6.22700574e-01]
+ [ -1.16270967e+01   2.36480181e-01]
+ [ -6.79536869e-01   2.95694600e+00]
+ [ -5.60821920e+00  -6.42788782e-01]
+ [  7.39719284e+00  -7.81561361e-01]
+ [ -6.63614090e+00   7.36840507e-01]
+ [  1.13602269e+01   1.09842825e+00]
+ [  2.39619296e+00  -7.82022580e-01]
+ [  7.39116637e+00  -4.81621898e-01]
+ [  1.13783063e+01   1.98609862e-01]
+ [ -6.29316349e-01   4.57450470e-01]
+ [  9.37469223e+00   3.58393088e-01]
+ [ -3.59857867e+00  -1.10251147e+00]
+ [  3.36786768e+00   6.37783124e-01]
+ [ -4.62449155e+00   1.77137996e-01]
+ [  3.62446579e-01   8.77457963e-01]
+ [ -6.61002623e+00  -5.62897169e-01]
+ [  3.40402645e+00  -1.16185366e+00]
+ [  7.40522812e+00  -1.18148065e+00]
+ [ -1.63112338e+00   5.37342084e-01]
+ [ -2.63293041e+00   6.17233697e-01]
+ [ -9.60942087e+00  -6.23161793e-01]
+ [ -1.26108243e+01  -5.83446596e-01]
+ [ -7.59174506e+00  -1.48280377e+00]
+ [  3.39398235e+00  -6.61954551e-01]
+ [ -6.33333991e-01   6.57410113e-01]
+ [ -6.09228141e-01  -5.42347741e-01]
+ [ -3.61063160e+00  -5.02632544e-01]
+ [ -3.65281683e+00   1.59694370e+00]
+ [  1.24022104e+01  -9.81059784e-01]
+ [  1.03664552e+01   7.78400581e-01]
+ [ -3.62469334e+00   1.97226204e-01]
+ [ -1.60701753e+00  -6.62415770e-01]
+ [ -1.66160436e+01  -3.63859965e-01]
+ [ -1.46285001e+01   2.76195378e-01]
+ [  4.35762178e+00   1.15777044e+00]
+ [ -4.62449155e+00   1.77137996e-01]
+ [ -5.97175216e-01  -1.14222667e+00]
+ [ -4.61243863e+00  -4.22740931e-01]
+ [ -1.63915866e+00   9.37261368e-01]
+ [  5.35742000e+00   1.17785865e+00]
+ [ -1.62911456e+00   4.37362262e-01]
+ [ -8.62167558e+00  -3.19465775e-03]
+ [ -1.62107928e+00   3.74429777e-02]
+ [  6.37328877e+00   3.98108285e-01]
+ [ -7.59174506e+00  -1.48280377e+00]
+ [  3.82534787e-01  -1.22340248e-01]
+ [  3.35380593e+00   1.33764187e+00]
+ [  5.36746410e+00   6.77959540e-01]
+ [  4.39980702e+00  -9.41805807e-01]
+ [  3.41607938e+00  -1.76173258e+00]
+ [ -1.61706164e+00  -1.62516665e-01]
+ [ -3.63875509e+00   8.97084952e-01]
+ [ -1.61706164e+00  -1.62516665e-01]
+ [  3.38996471e+00  -4.61994909e-01]
+ [  3.37992060e+00   3.79041970e-02]
+ [  2.39820178e+00  -8.82002402e-01]
+ [  2.38213121e+00  -8.21638323e-02]
+ [ -4.61846509e+00  -1.22801468e-01]
+ [ -2.61485103e+00  -2.82584694e-01]
+ [ -6.29316349e-01   4.57450470e-01]
+ [  5.36947292e+00   5.77979719e-01]
+ [ -6.60600859e+00  -7.62856811e-01]
+ [  6.40944755e+00  -1.40152850e+00]
+ [  9.37870987e+00   1.58433446e-01]
+ [  6.39136816e+00  -5.01710106e-01]
+ [ -6.35342811e-01   7.57389934e-01]
+ [ -7.60982444e+00  -5.82985377e-01]
+ [ -3.61866688e+00  -1.02713260e-01]
+ [ -5.62830741e+00   3.57009430e-01]
+ [  6.39739462e+00  -8.01649569e-01]
+ [  8.40703515e+00  -1.26137226e+00]
+ [  7.38513991e+00  -1.81682434e-01]
+ [ -2.61886867e+00  -8.26250515e-02]
+ [  4.37770999e+00   1.57972226e-01]
+ [  8.32869114e+00   2.63784077e+00]
+ [ -1.56564218e+01   1.65582467e+00]
+ [  1.14044210e+01  -1.10112781e+00]
+ [  1.13602269e+01   1.09842825e+00]
+ [  5.34938471e+00   1.57777793e+00]
+ [ -6.63212326e+00   5.36880864e-01]
+ [ -1.62911456e+00   4.37362262e-01]
+ [  3.34323088e-01   2.27717546e+00]
+ [  2.38614885e+00  -2.82123475e-01]
+ [  2.37610475e+00   2.17775631e-01]
+ [  6.40342109e+00  -1.10158903e+00]
+ [  1.04046228e+01  -1.12121602e+00]
+ [ -3.62670216e+00   2.97206025e-01]
+ [ -7.65000086e+00   1.41661105e+00]
+ [ -1.25907361e+01  -1.58324481e+00]
+ [  3.74499504e-01   2.77579036e-01]
+ [  1.37831536e+00   9.77076020e-02]
+ [  4.38976292e+00  -4.41906701e-01]
+ [  3.52402475e-01   1.37735707e+00]
+ [  2.37208711e+00   4.17735274e-01]
+ [ -3.63674627e+00   7.97105131e-01]
+ [ -2.59878046e+00  -1.08242326e+00]] 
+</code></pre>
+	 
 	 
 	<br><br>
 	
-	<b>SVD:</b> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu altmenüyle, 
+	<b>SVD:</b> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bu altmenüyle, boyut indirgeme işlemi için <b>SVD (Singular Value Decomposition)</b>
+	  istatistik işlemi kullanılabilir. Türkçesi<b> Tekil Değer Ayrıştırması</b> olan SVD, bir matrisin çarpanlarına ayrılma 
+	  türlerinden biridir ve Google'ın PageRank algoritmasından insan yüzlerini modellemeye, otomatik deneme notlamasından 
+	  gen analizine, bilgi getirimi ve çıkarımından boyut azaltma ve veri sıkıştırmaya kadar uzanan geniş bir yelpazede 
+	  kullanılan temel adımdır.<br>
+	   Bir dikdörtgen matrisin transposlarının çarpımlarını kullanarak 2 farklı dik matris ile ifade
+	   edilmesidir. PCA'deki gibi yine belirli varyasyon yüzdesine etkiye göre boyut azaltımı yapılabilir. 
+	   PCA'den farklı olarak ilişkili değişkenler ilişkisiz değerlere map edilerek SVD gerçeklenir.
 	
-	<br>	Kullanımına bakacak olursak;<br>
+	<br><br>	Kullanımına bakacak olursak;<br><br>
 	&nbsp;&nbsp;&nbsp;&nbsp; PIVA'nın <b>Ön İşleme</b> menüsünden <b>SVD</b> altmenüsüne tıklandığı zaman ekranın <b>Parametreler</b>
-	 için ayarlanan	alanına Pie chart'ı oluşturmak için gereken parametreleri kullanıcıdan alan ekran gelecektir.
+	 için ayarlanan	alanına SVD için gereken parametreleri kullanıcıdan alan ekran gelecektir.<br>
+	  Boyutunu indirgemek istediğimiz kolonları seçtikten sonra istenilen <b>eşik seviyesi (threshold)</b> girilir. Eğer elde edilen sonuçlar
+	 bir rapor halinde kayıt edilmek istenirse <b>Raporu Kaydet</b> kutucuğu işaretlenerek dosya konumu seçilebilir. Gerekli 
+	 parametrik ayarlamalar yapıldıktan sonra <b>Tamam</b> butonuyla işlemler yürütülüp, sonuçlar <b>Çıktı</b> ekranından alınabilir. 
+	 
 	<br><br><div align="center"> <img src="pics/onisleme_svd1.JPG" width="467" height="342" alt="" title="SVD" /> </div>
 	<br>
+	Aşağıda örnek olarak eldeki verisetinden <b>Age</b> ve <b>Temperature</b> özellikleri seçilmiş ve eşik değeri olarak da <b>33</b>
+	 değeri girilmiş ve sonuçları aşağıda gösterilmiştir. 
+	<pre  style="font-family:arial;font-size:12px;border:1px dashed #CCCCCC;width:99%;height:auto;overflow:auto;background:#f0f0f0;;;padding:0px;color:#000000;text-align:left;line-height:20px;"><code style="color:#000000;word-wrap:normal;">
+U: [[-0.09722369 -0.06564998]
+ [-0.09847907 -0.09183581]
+ [-0.09957759  0.078471  ]
+ [-0.0979329  -0.0704059 ]
+ [-0.096437   -0.18474585]
+ [-0.1023971  -0.02927302]
+ [-0.09759255 -0.08589091]
+ [-0.10166245  0.11779214]
+ [-0.09849333 -0.10969877]
+ [-0.10461956  0.16903135]
+ [-0.10004937  0.03977262]
+ [-0.1019284   0.11600867]
+ [-0.1038217   0.17438176]
+ [-0.1001808  -0.01441077]
+ [-0.10331831  0.14222277]
+ [-0.09782999 -0.05194844]
+ [-0.10163084  0.04693477]
+ [-0.09864211 -0.07516182]
+ [-0.10087576 -0.00130372]
+ [-0.09734086 -0.1019704 ]
+ [-0.10003511  0.05763558]
+ [-0.10130784  0.1201701 ]
+ [-0.09992911 -0.03049027]
+ [-0.09967741 -0.04656977]
+ [-0.09631982 -0.14842542]
+ [-0.09538744 -0.19547493]
+ [-0.09620265 -0.112105  ]
+ [-0.10047836  0.05466313]
+ [-0.10035811 -0.01559975]
+ [-0.09929428 -0.00846587]
+ [-0.0983619  -0.05551538]
+ [-0.10022359 -0.06799967]
+ [-0.10309822  0.19700065]
+ [-0.10401326  0.15532981]
+ [-0.09898246 -0.05967681]
+ [-0.09886529 -0.02335639]
+ [-0.09429201 -0.25919843]
+ [-0.09550461 -0.23179536]
+ [-0.10241444  0.05944732]
+ [-0.09864211 -0.07516182]
+ [-0.09876237 -0.00489893]
+ [-0.0981102  -0.07159488]
+ [-0.10028372 -0.03286823]
+ [-0.10275479  0.07493233]
+ [-0.09984046 -0.02989578]
+ [-0.09719208 -0.13650736]
+ [-0.09948585 -0.02751782]
+ [-0.10238592  0.09517326]
+ [-0.09620265 -0.112105  ]
+ [-0.09998924  0.00464117]
+ [-0.1022514   0.04277334]
+ [-0.10231153  0.07790478]
+ [-0.10055276  0.07193161]
+ [-0.09950319  0.06120252]
+ [-0.09930855 -0.02632884]
+ [-0.09960302 -0.06383824]
+ [-0.09930855 -0.02632884]
+ [-0.10065567  0.05347415]
+ [-0.10109893  0.0505017 ]
+ [-0.09996072  0.04036711]
+ [-0.10066993  0.03561119]
+ [-0.09837616 -0.07337835]
+ [-0.09887955 -0.04121936]
+ [-0.1001808  -0.01441077]
+ [-0.10222288  0.07849927]
+ [-0.09716356 -0.10078142]
+ [-0.10079019  0.10587407]
+ [-0.103141    0.14341175]
+ [-0.10158805  0.10052366]
+ [-0.10044676 -0.01619424]
+ [-0.09700051 -0.11745541]
+ [-0.09871651 -0.05789334]
+ [-0.09847907 -0.09183581]
+ [-0.1013221   0.10230713]
+ [-0.10155953  0.1362496 ]
+ [-0.10219436  0.1142252 ]
+ [-0.09905685 -0.04240834]
+ [-0.10152793  0.06539222]
+ [-0.10501695  0.11306449]
+ [-0.09640539 -0.25560322]
+ [-0.10266922  0.18211013]
+ [-0.10461956  0.16903135]
+ [-0.1031094   0.07255437]
+ [-0.09831603 -0.10850979]
+ [-0.09984046 -0.02989578]
+ [-0.10211688 -0.00962658]
+ [-0.10049263  0.03680017]
+ [-0.10093589  0.03382772]
+ [-0.10105614  0.1040906 ]
+ [-0.10232888  0.16662512]
+ [-0.09907111 -0.0602713 ]
+ [-0.09877355 -0.12934521]
+ [-0.09450092 -0.18953004]
+ [-0.10034384  0.00226321]
+ [-0.10050689  0.0189372 ]
+ [-0.10099601  0.06895916]
+ [-0.10131901 -0.00427617]
+ [-0.10111319  0.03263874]
+ [-0.09951437 -0.06324375]
+ [-0.09817033 -0.03646344]]
+
+s: [ 1053.06925621    60.28832079]
+
+V: [[-0.35840798 -0.93356506]
+ [ 0.93356506 -0.35840798]]
+
+ilk matrisin bir daha elde edilmesi:
+[[  33.    97. ]
+ [  32.    98.8]
+ [  42.    96.2]
+ [  33.    97.8]
+ [  26.    98.8]
+ [  37.   101.3]
+ [  32.    97.8]
+ [  45.    97.4]
+ [  31.    99.2]
+ [  49.    99.2]
+ [  40.    97.5]
+ [  45.    97.7]
+ [  49.    98.3]
+ [  37.    98.8]
+ [  47.    98.5]
+ [  34.    97.3]
+ [  41.    98.9]
+ [  33.    98.6]
+ [  38.    99.2]
+ [  31.    97.9]
+ [  41.    97.1]
+ [  45.    97. ]
+ [  36.    98.9]
+ [  35.    99. ]
+ [  28.    97.9]
+ [  25.    98. ]
+ [  30.    97. ]
+ [  41.    97.6]
+ [  37.    99. ]
+ [  37.    97.8]
+ [  34.    97.9]
+ [  34.   100. ]
+ [  50.    97.1]
+ [  48.    98.9]
+ [  34.    98.6]
+ [  36.    97.7]
+ [  21.    98.3]
+ [  23.    98.9]
+ [  42.    99.4]
+ [  33.    98.6]
+ [  37.    97.2]
+ [  33.    98. ]
+ [  36.    99.3]
+ [  43.    99.4]
+ [  36.    98.8]
+ [  29.    98.5]
+ [  36.    98.4]
+ [  44.    98.6]
+ [  30.    97. ]
+ [  38.    98.2]
+ [  41.    99.6]
+ [  43.    98.9]
+ [  42.    97.3]
+ [  41.    96.5]
+ [  36.    98.2]
+ [  34.    99.3]
+ [  36.    98.2]
+ [  41.    97.8]
+ [  41.    98.3]
+ [  40.    97.4]
+ [  40.    98.2]
+ [  33.    98.3]
+ [  35.    98.1]
+ [  37.    98.8]
+ [  43.    98.8]
+ [  31.    97.7]
+ [  44.    96.8]
+ [  47.    98.3]
+ [  44.    97.7]
+ [  37.    99.1]
+ [  30.    97.9]
+ [  34.    98.3]
+ [  32.    98.8]
+ [  44.    97.4]
+ [  46.    96.9]
+ [  45.    98. ]
+ [  35.    98.3]
+ [  42.    98.4]
+ [  46.   100.8]
+ [  22.   100.3]
+ [  49.    97. ]
+ [  49.    99.2]
+ [  43.    99.8]
+ [  31.    99. ]
+ [  36.    98.8]
+ [  38.   100.6]
+ [  40.    98. ]
+ [  40.    98.5]
+ [  44.    97.1]
+ [  48.    97. ]
+ [  34.    98.7]
+ [  30.    99.9]
+ [  25.    97. ]
+ [  38.    98.6]
+ [  39.    98.4]
+ [  42.    97.8]
+ [  38.    99.7]
+ [  40.    98.7]
+ [  34.    99.2]
+ [  35.    97.3]]
+
+Seçilen özellik sayısı: 2
+
+Age tekil değeri: 1053.06925621
+Temperature tekil değeri: 60.2883207943
+	</code></pre>
 	
 	
 	 
