@@ -36,8 +36,12 @@ import Dlg_F_Quan
 import Dlg_F_Probs
 import Dlg_F_Plot
 import Dlg_AboutPIVA
-import Dlg_Summaries
 
+import Dlg_Summaries
+import One_sample_t_test
+import Two_sample_t_test
+import Paired_t_test
+import Anova
 import webbrowser
 
 import k_means
@@ -274,7 +278,23 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionMean = QtGui.QAction(MainWindow)
         self.actionMean.setObjectName(_fromUtf8("actionMean"))
 
+        self.action_ostt = QtGui.QAction(MainWindow)
+        self.action_ostt.setObjectName(_fromUtf8("action_ostt"))
+
+        self.action_itstt = QtGui.QAction(MainWindow)
+        self.action_itstt.setObjectName(_fromUtf8("action_itstt"))
+
+        self.action_pts = QtGui.QAction(MainWindow)
+        self.action_pts.setObjectName(_fromUtf8("action_pts"))
+
+        self.action_anova = QtGui.QAction(MainWindow)
+        self.action_anova.setObjectName(_fromUtf8("action_anova"))
+
         self.menuStatistic.addAction(self.actionMean)
+        self.menuStatistic.addAction(self.action_ostt)
+        self.menuStatistic.addAction(self.action_itstt)
+        self.menuStatistic.addAction(self.action_pts)
+        self.menuStatistic.addAction(self.action_anova)
 
         # Menu Grafikler Actions
         self.actionPie_Chart = QtGui.QAction(MainWindow)
@@ -484,6 +504,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         #-----------------Statistic----------------------------#
         self.connect(self.actionMean, QtCore.SIGNAL("triggered()"), self.Summaries)
+        self.connect(self.action_ostt, QtCore.SIGNAL("triggered()"), self.Ostt)
+        self.connect(self.action_itstt, QtCore.SIGNAL("triggered()"), self.Itstt)
+        self.connect(self.action_pts, QtCore.SIGNAL("triggered()"), self.Pts)
+        self.connect(self.action_anova, QtCore.SIGNAL("triggered()"), self.Anova)
         #-----------------End Statistic----------------------------#
 
         self.connect(self.actionNormalQuantiles, QtCore.SIGNAL("triggered()"), self.NormQuan)
@@ -816,6 +840,162 @@ class Ui_MainWindow(QtGui.QMainWindow):
         except Exception, e:
             self.WriteLog("Özetler Hesaplanamadı: " + e.message)
 
+    def Ostt(self):
+        self.CheckLayoutParams()
+        try:
+            self.dlgOstt = StartDlgOstt(self.myDataSet)
+            self.SetDlgParamsTitle(u"Tek Grup t Testi")
+
+            self.gridLayout_Params.addWidget(self.dlgOstt, 0, 0, 1, 1)
+            self.dlgOstt.ok.clicked.connect(self.calculateOstt)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+    def calculateOstt(self):
+        self.clearOutput()
+        self.WriteLog("Tek grup t-testi hesaplanıyor..")
+        try:
+            self.WriteOutput("t skoru: "+str(self.dlgOstt.t_score)+"\n p değeri: "+str(self.dlgOstt.pvalue))
+            self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
+        except Exception, e:
+            self.WriteLog("Tek Grup t-Testi Hesaplanamadı: " + e.message)
+
+    def Itstt(self):
+        from collections import Counter
+        self.CheckLayoutParams()
+        features = self.myDataSet.features
+        appropriate = {}
+        others = []
+        for i in features:
+            if i in self.myDataSet.numericFeatures:
+                values = self.myDataSet.GetNumericValues(i)[0]
+            else:
+                values = self.myDataSet.GetNonNumericValues(i)[0]
+            tally = Counter(values)
+            if len(tally) == 2:
+                appropriate[i] = tally.keys()
+            else:
+                if i in self.myDataSet.numericFeatures:
+                    others.append(i)
+        if len(appropriate) == 0:
+            Errors.ShowWarningMsgBox(self, u"Veri seti bu test için uygun değildir!")
+
+        else:
+            try:
+                self.dlgItstt = StartDlgItstt(self.myDataSet, appropriate, others)
+                self.SetDlgParamsTitle(u"Bağımsız İki Grup t Testi")
+                self.gridLayout_Params.addWidget(self.dlgItstt, 0, 0, 1, 1)
+                self.dlgItstt.ok.clicked.connect(self.calculateItstt)
+            except Exception, e:
+                self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
+                Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+    def calculateItstt(self):
+        self.clearOutput()
+        self.WriteLog("Bağımsız iki grup t-testi hesaplanıyor..")
+        try:
+            self.WriteOutput("t skoru: "+str(self.dlgItstt.t_score)+"\n p değeri: "+str(self.dlgItstt.pvalue))
+            samples = self.dlgItstt.means.keys()
+            self.WriteOutput(samples[0]+" için ortalama: "+str(self.dlgItstt.means[samples[0]])+
+            "\n"+samples[1]+" için ortalama: "+str(self.dlgItstt.means[samples[1]]))
+            self.WriteLog("Bağımsız İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
+        except Exception, e:
+            self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
+
+    def Pts(self):
+        self.CheckLayoutParams()
+        features = self.myDataSet.numericFeatures
+        if len(features) < 2 :
+            Errors.ShowWarningMsgBox(self, u"Veri seti bu test için uygun değildir!")
+        else:
+            try:
+                self.dlgPts = StartDlgPts(self.myDataSet, features)
+                self.SetDlgParamsTitle(u"Bağımlı İki Grup t Testi")
+                self.gridLayout_Params.addWidget(self.dlgPts, 0, 0, 1, 1)
+                self.dlgPts.ok.clicked.connect(self.calculatePts)
+            except Exception, e:
+                if not self.dlgPts.no_exeption:
+                    self.WriteLog("Bağımlı İki Grup t-Testi Hesaplanamadı: " + e.message)
+                    Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+    def calculatePts(self):
+        self.clearOutput()
+        self.WriteLog("Bağımlı iki grup t-testi hesaplanıyor..")
+        try:
+            self.WriteOutput("t skoru: "+str(self.dlgPts.t_score)+"\n p değeri: "+str(self.dlgPts.pvalue))
+            self.WriteOutput("İlk örneklem için ortalama: "+str(self.dlgPts.means[0])+
+            "\nİkinci örneklem için ortalama: "+str(self.dlgPts.means[1]))
+            self.WriteLog("Bağımlı İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
+        except Exception, e:
+            if not self.dlgPts.no_exeption:
+                self.WriteLog("Bağımlı İki Grup t-Testi Hesaplanamadı: " + e.message)
+
+    def Anova(self):
+        from collections import Counter
+        self.CheckLayoutParams()
+        features = self.myDataSet.features
+        appropriate = {}
+        others = []
+        for i in features:
+            if i in self.myDataSet.numericFeatures:
+                values = self.myDataSet.GetNumericValues(i)[0]
+            else:
+                values = self.myDataSet.GetNonNumericValues(i)[0]
+
+            tally = Counter(values) #all(isinstance(x, int) for x in values) düzelt
+            if len(tally) >= 3 :
+                if i in self.myDataSet.numericFeatures:
+                    tmp = tally.keys()
+                    addIt = True
+                    k = 0
+                    for j in tmp:
+                        if j == k+1:
+                            k = j
+                        else:
+                            addIt = False
+                    if addIt:
+                        appropriate[i] = tally.keys()
+                    else:
+                        others.append(i)
+                else:
+                    appropriate[i] = tally.keys()
+            else:
+                if i in self.myDataSet.numericFeatures:
+                    others.append(i)
+
+        if len(appropriate) == 0:
+            Errors.ShowWarningMsgBox(self, u"Veri seti bu test için uygun değildir!")
+
+        else:
+            try:
+                self.dlgAnova = StartDlgAnova(self.myDataSet, appropriate, others)
+                self.SetDlgParamsTitle(u"Anova Testi")
+                self.gridLayout_Params.addWidget(self.dlgAnova, 0, 0, 1, 1)
+                self.dlgAnova.ok.clicked.connect(self.calculateAnova)
+            except Exception, e:
+                self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
+                Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+    def calculateAnova(self):
+        self.clearOutput()
+        self.WriteLog("Anova testi hesaplanıyor..")
+        try:
+            self.WriteOutput("              SS          DF        MS          F")
+            self.WriteOutput("SSW  "+
+                             "    "+str("%.2f" %(self.dlgAnova.SSW))+
+                             "    "+str("%.2f" %(self.dlgAnova.dfW))+
+                             "    "+str("%.2f" %(self.dlgAnova.MSW))+
+                             "    "+str("%.2f" %(self.dlgAnova.F)))
+            self.WriteOutput("SSB   "+
+                             "    "+str("%.2f" %(self.dlgAnova.SSB))+
+                             "    "+str("%.2f" %(self.dlgAnova.dfB))+
+                             "    "+str("%.2f" %(self.dlgAnova.MSB)))
+            self.WriteOutput("TOTAL"+
+                             "    "+str("%.2f" %(self.dlgAnova.SSW+self.dlgAnova.SSB))+
+                             "    "+str("%.2f" %(self.dlgAnova.dfW+self.dlgAnova.dfB)))
+            self.WriteLog("Anova Testi Başarılı Bir Şekilde Hesaplandı.")
+        except Exception, e:
+            self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
 
     def CallKmeans(self):
         self.CheckLayoutParams()
@@ -1609,6 +1789,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.actionMean.setText(_translate("MainWindow", "Özet", None))
 
+        self.action_ostt.setText(_translate("MainWindow", "Tek Grup t Testi", None))
+
+        self.action_itstt.setText(_translate("MainWindow", "Bağımsız İki Grup t Testi", None))
+
+        self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar t Testi", None))
+
+        self.action_anova.setText(_translate("MainWindow", "Anova Testi", None))
+
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
         self.actionOrnekVeri.setText(_translate("MainWindow", "Örnek Verisetleri", None))
@@ -1764,6 +1952,27 @@ class StartDlgSummaries(QtGui.QDialog, Dlg_Summaries.Ui_SummariesParams):
     def __init__(self, dataset, parent = None):
         QtGui.QDialog.__init__(self,parent)
         self.setupUi(self, dataset)
+
+class StartDlgOstt(QtGui.QDialog, One_sample_t_test.Ui_Form):
+    def __init__(self, dataset, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setupUi(self, dataset)
+
+class StartDlgItstt(QtGui.QDialog, Two_sample_t_test.Ui_Form):
+    def __init__(self, dataset, appropriate, others, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setupUi(self, dataset, appropriate, others)
+
+class StartDlgPts(QtGui.QDialog, Paired_t_test.Ui_Form):
+    def __init__(self, dataset, features, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setupUi(self, dataset, features)
+
+
+class StartDlgAnova(QtGui.QDialog, Anova.Ui_Form):
+    def __init__(self, dataset, appropriate, others, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setupUi(self, dataset, appropriate, others)
 
         ### MAIN ###
 if __name__ == "__main__":
