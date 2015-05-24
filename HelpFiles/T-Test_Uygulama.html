@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>T testler</title>
+
+  </head>
+  <body>
+  	<h2>Tek grup "T"-Testi (One–Sample Test)</h2>
+	<p>Kullanımı;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; PIVA'nın <b>İstatistik</b> menüsünden <b>Tek Grup t Testi</b> altmenüsüne tıklandığı zaman ekranın 
+	<b>Parametreler</b> için ayarlanan alanına Tek Grup t Testi hesaplamak için gereken parametreleri 
+	kullanıcıdan alan ekran gelecektir.</p>
+	
+	<br><br><div align="center"><img src="pics/tek_grup_t_test.png" width="468" height="278" alt=""/></div>
+	<br>
+	Bu ekranda tek grup t testi hesaplanacak numeric sütunlardan istenilenler seçilir, ardından hesaplanma için
+	istenen parametreler girilir ve <b>Tamam</b> butonuna tıklanarak bu işlem gerçekleştirilir.
+	<br> Bu işlemin sonucunda hesaplanan sonuçlar PIVA ana ekranının sol tarafında bulunan <b>Çıktı</b> alanına yazılacaktır.
+	<br><br>
+	Eldeki verisetinde Temperature sütunu için tek grup t testi hesaplanmış ve aşağıda gösterilmiştir.
+	
+	<br><br>
+	<div align="center"><img src="pics/tek_grup_t_test_2.png" width="472" height="277" alt=""/></div>
+	<div align="center">
+	<p>Yapılması istenen özellikler/işlemler resimdeki gibi seçilmiştir.</p>
+	<p>Buarada ekrandaki comboBox içindeki özelliklerden hangisi için test uygulanacaksa seçilir</p>
+	<p>H0 kısmında null hipotezi için belirlenen değer girilir.</p>
+	<p>Güven aralığı kısmınada sonucun hangi güven aralığına göre değerlendirilmesi isteniyorsa o değer girilir.</p>	 							 		 
+	</div><br>
+
+    <h2>Bağımsız İki Grup "T"-Testi (Independent Samples T-Test)</h2>
+	<p>Kullanımı;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; PIVA'nın <b>İstatistik</b> menüsünden <b>Bağımsız İki Grup "T"-Testi</b> altmenüsüne tıklandığı zaman ekranın
+	<b>Parametreler</b> için ayarlanan alanına Bağımsız İki Grup T-Testi hesaplamak için gereken parametreleri
+	kullanıcıdan alan ekran gelecektir.</p>
+
+	<br><br><div align="center"><img src="pics/bağımsız_t.JPG" width="468" height="278" alt=""/></div>
+	<br>
+	Bu ekranda bağımsız iki grup için hesaplanacak numeric sütunlardan istenilenler seçilir, ardından hesaplanma için
+	istenen parametreler girilir ve <b>Tamam</b> butonuna tıklanarak bu işlem gerçekleştirilir.
+	<br> Bu işlemin sonucunda hesaplanan sonuçlar PIVA ana ekranının sol tarafında bulunan <b>Çıktı</b> alanına yazılacaktır.
+	<br><br>
+	<p>Bu testin çalışması için eldeki verisetinin içinde iki grup oluşturacak bir sütun bulunmalıdır.</p>
+	<p>Örnek olarak Gender sütunu altında M ve F olması yada başka bir sütun içinde iki tane grup belirtecek değer olması.</p>
+	Eldeki verisetinde M ve F için Temperature sütunu için bağımsız iki grup t testi hesaplanmış ve aşağıda gösterilmiştir.
+
+	<br><br>
+	<div align="center"><img src="pics/bağımsız_t_2.JPG" width="472" height="277" alt=""/></div>
+	<div align="center">
+	<p>Yapılması istenen özellikler/işlemler resimdeki gibi seçilmiştir.</p>
+	<p>Buarada ekrandaki ilk comboBox içindeki iki tane grup içeren sütunlar gösterilir. Hangisi için test uygulanacaksa seçilir</p>
+	<p>İkinci comboBox içinde bu iki grup için farklı olup olmadığını test edeceğimiz özellik seçilir.</p>
+	<p>Güven aralığı kısmınada sonucun hangi güven aralığına göre değerlendirilmesi isteniyorsa o değer girilir.</p>
+	</div><br>
+
+    <h2>Bağımlı İki Grup "T"-Testi (Paired Samples T-Test)</h2>
+	<p>Kullanımı;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; PIVA'nın <b>İstatistik</b> menüsünden <b>Bağımlı İki Grup "T"-Testi</b> altmenüsüne tıklandığı zaman ekranın
+	<b>Parametreler</b> için ayarlanan alanına Bağımsız İki Grup T-Testi hesaplamak için gereken parametreleri
+	kullanıcıdan alan ekran gelecektir.</p>
+
+	<br><br><div align="center"><img src="pics/bağımlı_t_2.JPG" width="468" height="278" alt=""/></div>
+	<br>
+	Bu ekranda bağımlı iki grup için hesaplanacak numeric sütunlardan istenilenler seçilir, ardından hesaplanma için
+	istenen parametreler girilir ve <b>Tamam</b> butonuna tıklanarak bu işlem gerçekleştirilir.
+	<br> Bu işlemin sonucunda hesaplanan sonuçlar PIVA ana ekranının sol tarafında bulunan <b>Çıktı</b> alanına yazılacaktır.
+	<br><br>
+	<br><br>
+	<div align="center"><img src="pics/bağımlı_t.JPG" width="472" height="277" alt=""/></div>
+	<div align="center">
+	<p>Yapılması istenen özellikler/işlemler resimdeki gibi seçilmiştir.</p>
+	<p>Buarada ekrandaki ilk comboBox içinden grubun teste tutulduğu ilk durum seçilir.</p>
+	<p>İkinci comboBox içinde aynı grubun test edildiği ikinci durum seçilir</p>
+	<p>Güven aralığı kısmınada sonucun hangi güven aralığına göre değerlendirilmesi isteniyorsa o değer girilir.</p>
+	</div><br>
+  </body>
+</html>

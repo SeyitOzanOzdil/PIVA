@@ -822,14 +822,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.OpenFile(fileInfo.filePath())
         self.textEdit_Down.setText("")
 
-
-    def CallHelp(self):
-
-        new = 2
-        url = "file://"+os.path.join(os.getcwd(), "HelpFiles/index.html")
-
-        webbrowser.open(url,new=new)
-
     def Summaries(self):
         self.CheckLayoutParams()
         try:
@@ -859,6 +851,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
             self.gridLayout_Params.addWidget(self.dlgOstt, 0, 0, 1, 1)
             self.dlgOstt.ok.clicked.connect(self.calculateOstt)
+            self.dlgOstt.help.clicked.connect(self.CallHelp)
         except:
             Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
 
@@ -897,6 +890,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.SetDlgParamsTitle(u"Bağımsız İki Grup T Testi")
                 self.gridLayout_Params.addWidget(self.dlgItstt, 0, 0, 1, 1)
                 self.dlgItstt.ok.clicked.connect(self.calculateItstt)
+                self.dlgItstt.help.clicked.connect(self.CallHelp)
             except Exception, e:
                 self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
                 Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
@@ -924,6 +918,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.SetDlgParamsTitle(u"Bağımlı İki Grup T Testi")
                 self.gridLayout_Params.addWidget(self.dlgPts, 0, 0, 1, 1)
                 self.dlgPts.ok.clicked.connect(self.calculatePts)
+                self.dlgPts.help.clicked.connect(self.CallHelp)
             except Exception, e:
                 if not self.dlgPts.no_exeption:
                     self.WriteLog("Bağımlı İki Grup t-Testi Hesaplanamadı: " + e.message)
@@ -983,6 +978,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.SetDlgParamsTitle(u"Anova Testi")
                 self.gridLayout_Params.addWidget(self.dlgAnova, 0, 0, 1, 1)
                 self.dlgAnova.ok.clicked.connect(self.calculateAnova)
+                self.dlgAnova.help.clicked.connect(self.CallHelp)
             except Exception, e:
                 self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
                 Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
@@ -1060,6 +1056,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.gridLayout_Params.addWidget(self.km, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"K-Means Parametreleri")
             self.km.OkButton.clicked.connect(self.kmeansout)
+            self.km.helpButton.clicked.connect(self.CallHelp)
         except:
              Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
 
@@ -1080,6 +1077,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.gridLayout_Params.addWidget(self.kmd, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"K-Medoids Parametreleri")
             self.kmd.OkButton.clicked.connect(self.kmedoidsout)
+            self.kmd.helpButton.clicked.connect(self.CallHelp)
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
 
@@ -1098,6 +1096,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             fz = StartFuzzy(self.myDataSet)
             self.gridLayout_Params.addWidget(fz, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"Fuzzy C-Means Parametreleri")
+            fz.helpButton.clicked.connect(self.CallHelp)
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -1108,6 +1107,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             hier = StartHiearachy(self.myDataSet)
             self.gridLayout_Params.addWidget(hier, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"Hiyerarşik Parametreleri")
+            hier.helpButton.clicked.connect(self.CallHelp)
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -1118,6 +1118,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             dbs = StartDbscan(self.myDataSet)
             self.gridLayout_Params.addWidget(dbs, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"DBSCAN Parametreleri")
+            dbs.helpButton.clicked.connect(self.CallHelp)
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -1128,6 +1129,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             som = StartSom(self.myDataSet)
             self.gridLayout_Params.addWidget(som, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"SOM Parametreleri")
+            som.helpButton.clicked.connect(self.CallHelp)
 
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
@@ -1138,7 +1140,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             em = StartEm(self.myDataSet)
             self.gridLayout_Params.addWidget(em, 0, 0, 1, 1)
             self.SetDlgParamsTitle(u"EM Parametreleri")
-
+            em.helpButton.clicked.connect(self.CallHelp)
         except:
             Errors.ShowWarningMsgBox(self, "Lutfen veriseti yukleyiniz!")
 
@@ -1210,6 +1212,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
         items.append(dlg.formul)
         return items
 
+    def CallHelp(self):
+
+        new = 2
+        url = "file://"+os.path.join(os.getcwd(), "HelpFiles/index.html")
+
+        webbrowser.open(url,new=new)
 
     ### PIE CHART ###
 

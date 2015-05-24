@@ -21,11 +21,9 @@ except AttributeError:
 class Ui_Dialog(object):
     def setupUi(self, Dialog, dataset):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(316, 257)
-
+        self.setFixedSize(400, 300)
         self.dataset = dataset
         self.result = ""
-
         self.horizontalLayoutWidget = QtGui.QWidget(Dialog)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(45, 190, 221, 41))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
