@@ -467,6 +467,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionOrnekVeri.setObjectName("actionOrnekVeri")
         self.menuData.addAction(self.actionOrnekVeri)
 
+        self.actionYeniVeri = QtGui.QAction(MainWindow)
+        self.actionYeniVeri.setObjectName("actionYeniVeri")
+        self.menuData.addAction(self.actionYeniVeri)
+
         self.actionHelp = QtGui.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
         self.menuYardim.addAction(self.actionHelp)
@@ -538,6 +542,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.actionHakkinda, QtCore.SIGNAL("triggered()"), self.CallAboutPiva)
 
         self.connect(self.actionOrnekVeri, QtCore.SIGNAL("triggered()"), self.CallOrnekVeri)
+
+        self.connect(self.actionYeniVeri, QtCore.SIGNAL("triggered()"), self.CallYeniVeri)
 
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.CallHelp)
         #--------------END OF SIGNALS-----------------------#
@@ -657,7 +663,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def SaveFile(self):
         try:
             self.MissingValueControl()
-            FileOperations.CreateAndWriteFile(self, self.table, self.path)
+            self.path = FileOperations.CreateAndWriteFile(self, self.table, self.path)
             self.CreateDataSet()
         except Exception:
             Errors.ShowWarningMsgBox(self, u"Kayıt Gerçekleşmedi")
@@ -671,6 +677,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             Errors.ShowWarningMsgBox(self, u"Dataset bulunmamaktadır")
 
     def MissingValueControl(self):
+        self.yontem = ""
         for row in range(self.table.rowCount()):
             for clm in range(self.table.columnCount()):
                 line = self.table.item(row, clm).text()
@@ -821,6 +828,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.OpenFile(fileInfo.filePath())
         self.textEdit_Down.setText("")
+
+    def CallYeniVeri(self):
+        self.menuTable.setEnabled(True)
+        self.table = TableOperations.CreateTable(self.centralwidget, 0, 0, "")
+        self.dockWidget_DataSet.setWidget(self.table)
+        self.row_count = 0
+        self.col_count = 0
+        self.path = ""
 
     def Summaries(self):
         self.CheckLayoutParams()
@@ -1861,6 +1876,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
         self.actionOrnekVeri.setText(_translate("MainWindow", "Örnek Verisetleri", None))
+
+        self.actionYeniVeri.setText(_translate("MainWindow", "Yeni Veriseti Oluştur", None))
 
         self.actionHelp.setText(_translate("MainWindow", "PIVA Yardım", None))
 
