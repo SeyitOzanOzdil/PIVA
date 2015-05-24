@@ -9,7 +9,7 @@ from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as Naviga
 from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui
 import numpy as np
-
+from pylab import *
 
 from matplotlib.gridspec import GridSpec
 
@@ -291,8 +291,7 @@ def Cluster(plot_memroy, features, value):
 
     return main_frame
 
-def CreateRegression(x, y, line):
-    print "create geldi"
+def CreateRegression(x, y):
 
     main_frame = QtGui.QWidget()
 
@@ -312,12 +311,17 @@ def CreateRegression(x, y, line):
     main_frame.setLayout(vbox)
 
     axes.clear()
-    print x
-    print y
-    print line
 
-    axes.plot(x, line, 'r-', x, y, 'o')
+    m, b = np.polyfit(x, y, 1)
+
+    yp = polyval([m, b], x)
+
+    axes.plot(x, yp)
+    axes.scatter(x,y)
+    axes.grid(True)
+    axes.set_xlabel('x')
+    axes.set_ylabel('y')
 
     canvas.draw()
-    print "create bitti"
+
     return main_frame

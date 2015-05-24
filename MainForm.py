@@ -1031,38 +1031,24 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.WriteLog("Linear Regression hesaplanıyor..")
         try:
             self.WriteOutput(self.dlgLinear.regressionHesapla())
-
+            self.WriteLog("Linear Regression başarılı bir şekilde hesaplandı.")
+            
             # regression için chart çizdiren kısım
-            """
             try:
+                self.WriteLog("Şekil Şukul çizdiriliyor...")
+                x = self.myDataSet.GetNumericValues(self.dlgLinear.getChoosenItemOnResponse())[0]
+                y = self.myDataSet.GetNumericValues(self.dlgLinear.getChoosenItemOnExplanatory())[0]
 
-                values1 = list()
-                for val in self.myDataSet.dataSetDic[self.dlgLinear.getChoosenItemOnResponse()]:
-                    values1.append(val.value)
-
-                values2 = list()
-                for val in self.myDataSet.dataSetDic[self.dlgLinear.getChoosenItemOnExplanatory()]:
-                    values2.append(val.value)
-
-                print "value1 geliyor : ",values1
-                print "value2 geliyor : ", values2
-
-
-                self.main_frame = ChartCreator.CreateLinePlot(values1, values2)
-
-    # self.main_frame = ChartCreator.CreateRegression(x, y, line) # ???
+                self.main_frame = ChartCreator.CreateRegression(x, y)
 
                 self.CheckLayoutGraphs()
 
                 self.gridLayout_Graphs.addWidget(self.main_frame, 0, 0, 1, 1)
-                self.WriteLog("Şekil Şukul basarili bir sekilde cizdirildi")
+                self.WriteLog("Şekil Şukul başarılı bir şekilde çizdirildi.")
 
             except Exception,e:
                 self.WriteLog("Şekil Şukul cizdirilemedi: "+ e.message)
-            """
 
-
-            self.WriteLog("Linear Regression başarılı bir şekilde hesaplandı.")
         except Exception, e:
             self.WriteLog("Linear Regression Hesaplanamadi: " + e.message)
 

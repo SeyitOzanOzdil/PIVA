@@ -96,9 +96,7 @@ class Ui_Dialog(object):
         slope, intercept, r_value, p_value, std_err = stats.linregress(self.dataset.GetNumericValues(resp)[0],
                                                                        self.dataset.GetNumericValues(exp)[0])
 
-        self.line = slope*self.dataset.GetNumericValues(resp)[0] + intercept
-
-        #ChartCreator.CreateRegression(self.dataset.GetNumericValues(resp)[0], self.dataset.GetNumericValues(exp)[0], line)
+        #self.line = slope*self.dataset.GetNumericValues(resp)[0] + intercept
 
         self.result = "Response Değişkeni      :  %s \nExplanatory Değişkeni  :  %s\n\n" % (resp, exp)
         self.result += "     Intercept     :  %.4f\n" %(intercept)
