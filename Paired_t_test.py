@@ -166,5 +166,5 @@ class Ui_Form(object):
         self.reset.setText(_translate("Form", "Reset", None))
         self.ok.setText(_translate("Form", "Tamam", None))
         self.help.setText(_translate("Form", "Yardım", None))
-        self.label.setText(_translate("Form", "Güven aralığı = ", None))
+        self.label.setText(_translate("Form", "Güven aralığı  ", None))
 

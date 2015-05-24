@@ -8,7 +8,6 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui
-import time
 import numpy as np
 
 
@@ -290,4 +289,35 @@ def Cluster(plot_memroy, features, value):
 
         canvas.draw()
 
+    return main_frame
+
+def CreateRegression(x, y, line):
+    print "create geldi"
+
+    main_frame = QtGui.QWidget()
+
+    dpi = 100
+    fig = Figure((5.0, 4.0), dpi=dpi)
+    canvas = FigureCanvas(fig)
+    canvas.setParent(main_frame)
+    axes = fig.add_subplot(111)
+
+    mpl_toolbar = NavigationToolbar(canvas, main_frame)
+    hbox = QtGui.QHBoxLayout()
+    vbox = QtGui.QVBoxLayout()
+    vbox.addWidget(canvas)
+    vbox.addWidget(mpl_toolbar)
+    vbox.addLayout(hbox)
+
+    main_frame.setLayout(vbox)
+
+    axes.clear()
+    print x
+    print y
+    print line
+
+    axes.plot(x, line, 'r-', x, y, 'o')
+
+    canvas.draw()
+    print "create bitti"
     return main_frame

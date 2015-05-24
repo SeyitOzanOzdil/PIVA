@@ -42,6 +42,8 @@ import One_sample_t_test
 import Two_sample_t_test
 import Paired_t_test
 import Anova
+import Linear_Regression
+
 import webbrowser
 
 import k_means
@@ -290,11 +292,17 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_anova = QtGui.QAction(MainWindow)
         self.action_anova.setObjectName(_fromUtf8("action_anova"))
 
+        self.actionLinearRegression = QtGui.QAction(MainWindow)
+        self.actionLinearRegression.setObjectName(_fromUtf8("actionLinearRegression"))
+
         self.menuStatistic.addAction(self.actionMean)
+        self.menuStatistic.addSeparator()
         self.menuStatistic.addAction(self.action_ostt)
         self.menuStatistic.addAction(self.action_itstt)
         self.menuStatistic.addAction(self.action_pts)
         self.menuStatistic.addAction(self.action_anova)
+        self.menuStatistic.addSeparator()
+        self.menuStatistic.addAction(self.actionLinearRegression)
 
         # Menu Grafikler Actions
         self.actionPie_Chart = QtGui.QAction(MainWindow)
@@ -508,6 +516,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.action_itstt, QtCore.SIGNAL("triggered()"), self.Itstt)
         self.connect(self.action_pts, QtCore.SIGNAL("triggered()"), self.Pts)
         self.connect(self.action_anova, QtCore.SIGNAL("triggered()"), self.Anova)
+        self.connect(self.actionLinearRegression, QtCore.SIGNAL("triggered()"), self.LinearRegression)
         #-----------------End Statistic----------------------------#
 
         self.connect(self.actionNormalQuantiles, QtCore.SIGNAL("triggered()"), self.NormQuan)
@@ -563,6 +572,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.row_count = self.myDataSet.lineCount
         self.col_count = self.myDataSet.featureCount
         self.WriteLog("Veriseti tablo seklinde gorsellendi")
+        self.WriteLog("Verisetindeki toplam satır sayısı    : " + str(self.table.rowCount()))
+        self.WriteLog("Verisetindeki toplam sütun sayısı  : " + str(self.table.columnCount()))
 
         self.AddRecentFile()
         self.ControlRecentFiles()
@@ -844,7 +855,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.CheckLayoutParams()
         try:
             self.dlgOstt = StartDlgOstt(self.myDataSet)
-            self.SetDlgParamsTitle(u"Tek Grup t Testi")
+            self.SetDlgParamsTitle(u"Tek Grup T Testi")
 
             self.gridLayout_Params.addWidget(self.dlgOstt, 0, 0, 1, 1)
             self.dlgOstt.ok.clicked.connect(self.calculateOstt)
@@ -883,7 +894,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         else:
             try:
                 self.dlgItstt = StartDlgItstt(self.myDataSet, appropriate, others)
-                self.SetDlgParamsTitle(u"Bağımsız İki Grup t Testi")
+                self.SetDlgParamsTitle(u"Bağımsız İki Grup T Testi")
                 self.gridLayout_Params.addWidget(self.dlgItstt, 0, 0, 1, 1)
                 self.dlgItstt.ok.clicked.connect(self.calculateItstt)
             except Exception, e:
@@ -910,7 +921,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         else:
             try:
                 self.dlgPts = StartDlgPts(self.myDataSet, features)
-                self.SetDlgParamsTitle(u"Bağımlı İki Grup t Testi")
+                self.SetDlgParamsTitle(u"Bağımlı İki Grup T Testi")
                 self.gridLayout_Params.addWidget(self.dlgPts, 0, 0, 1, 1)
                 self.dlgPts.ok.clicked.connect(self.calculatePts)
             except Exception, e:
@@ -996,6 +1007,65 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteLog("Anova Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
+
+
+    def LinearRegression(self):
+        self.CheckLayoutParams()
+        try:
+
+            if self.myDataSet.numericFeatures > 0:
+                self.dlgLinear = StartLinearRegression(self.myDataSet)
+                self.dlgLinear.temizle()
+                self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+            else:
+                Errors.ShowInfoMsgBox(self, "Verisetinde uygun ozellik yer almamaktadır.")
+
+            self.SetDlgParamsTitle(u"Linear Regression Parametreleri")
+            self.gridLayout_Params.addWidget(self.dlgLinear, 0, 0, 1, 1)
+            self.dlgLinear.btnTamam.clicked.connect(self.FindLinearRegression)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+    def FindLinearRegression(self):
+        self.clearOutput()
+        self.WriteLog("Linear Regression hesaplanıyor..")
+        try:
+            self.WriteOutput(self.dlgLinear.regressionHesapla())
+
+            # regression için chart çizdiren kısım
+            """
+            try:
+
+                values1 = list()
+                for val in self.myDataSet.dataSetDic[self.dlgLinear.getChoosenItemOnResponse()]:
+                    values1.append(val.value)
+
+                values2 = list()
+                for val in self.myDataSet.dataSetDic[self.dlgLinear.getChoosenItemOnExplanatory()]:
+                    values2.append(val.value)
+
+                print "value1 geliyor : ",values1
+                print "value2 geliyor : ", values2
+
+
+                self.main_frame = ChartCreator.CreateLinePlot(values1, values2)
+
+    # self.main_frame = ChartCreator.CreateRegression(x, y, line) # ???
+
+                self.CheckLayoutGraphs()
+
+                self.gridLayout_Graphs.addWidget(self.main_frame, 0, 0, 1, 1)
+                self.WriteLog("Şekil Şukul basarili bir sekilde cizdirildi")
+
+            except Exception,e:
+                self.WriteLog("Şekil Şukul cizdirilemedi: "+ e.message)
+            """
+
+
+            self.WriteLog("Linear Regression başarılı bir şekilde hesaplandı.")
+        except Exception, e:
+            self.WriteLog("Linear Regression Hesaplanamadi: " + e.message)
+
 
     def CallKmeans(self):
         self.CheckLayoutParams()
@@ -1787,15 +1857,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDelRow.setText(_translate("MainWindow", "Satır Sil", None))
         self.actionDelClm.setText(_translate("MainWindow", "Sütun Sil", None))
 
-        self.actionMean.setText(_translate("MainWindow", "Özet", None))
-
-        self.action_ostt.setText(_translate("MainWindow", "Tek Grup t Testi", None))
-
-        self.action_itstt.setText(_translate("MainWindow", "Bağımsız İki Grup t Testi", None))
-
-        self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar t Testi", None))
-
+        self.actionMean.setText(_translate("MainWindow", "İstatistiksel Özet", None))
+        self.action_ostt.setText(_translate("MainWindow", "Tek Grup T Testi", None))
+        self.action_itstt.setText(_translate("MainWindow", "Bağımsız İki Grup T Testi", None))
+        self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar T Testi", None))
         self.action_anova.setText(_translate("MainWindow", "Anova Testi", None))
+        self.actionLinearRegression.setText(_translate("MainWindow", "Linear Regression", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
@@ -1968,11 +2035,16 @@ class StartDlgPts(QtGui.QDialog, Paired_t_test.Ui_Form):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self, dataset, features)
 
-
 class StartDlgAnova(QtGui.QDialog, Anova.Ui_Form):
     def __init__(self, dataset, appropriate, others, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self, dataset, appropriate, others)
+
+class StartLinearRegression(QtGui.QDialog, Linear_Regression.Ui_Dialog):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
+
 
         ### MAIN ###
 if __name__ == "__main__":

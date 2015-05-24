@@ -203,8 +203,8 @@ class Ui_Form(object):
         self.radio_noteq.setText(_translate("Form", "İki Taraflı", None))
         self.radio_less.setText(_translate("Form", "Fark < 0", None))
         self.radio_greater.setText(_translate("Form", "Fark > 0", None))
-        self.label_2.setText(_translate("Form", "   Varyanslar eşit =        ", None))
-        self.label.setText(_translate("Form", "Güven aralığı = ", None))
+        self.label_2.setText(_translate("Form", "   Varyanslar eşit         ", None))
+        self.label.setText(_translate("Form", "    Güven aralığı  ", None))
         self.label_4.setText(_translate("Form", "Grup Seçiniz", None))
         self.label_3.setText(_translate("Form", "Özellik Seçiniz", None))
 
