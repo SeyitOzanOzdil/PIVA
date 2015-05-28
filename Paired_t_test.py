@@ -114,6 +114,7 @@ class Ui_Form(object):
         self.horizontalLayout_2.addWidget(self.label)
         self.con_edit = QtGui.QLineEdit(self.gridLayoutWidget)
         self.con_edit.setObjectName(_fromUtf8("con_edit"))
+        self.con_edit.setText("0.05")
         self.horizontalLayout_2.addWidget(self.con_edit)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 1, 1, 1)
 

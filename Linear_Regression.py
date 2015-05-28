@@ -21,11 +21,11 @@ except AttributeError:
 class Ui_Dialog(object):
     def setupUi(self, Dialog, dataset):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        self.setFixedSize(400, 300)
+        self.setFixedSize(350, 210)
         self.dataset = dataset
         self.result = ""
         self.horizontalLayoutWidget = QtGui.QWidget(Dialog)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(45, 190, 221, 41))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(45, 180, 221, 21))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
@@ -40,7 +40,7 @@ class Ui_Dialog(object):
         self.btnIptal.clicked.connect(self.temizle)
 
         self.gridLayoutWidget = QtGui.QWidget(Dialog)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 295, 175))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 295, 155))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
@@ -97,18 +97,18 @@ class Ui_Dialog(object):
         #self.line = slope*self.dataset.GetNumericValues(resp)[0] + intercept
 
         self.result = "Response Değişkeni      :  %s \nExplanatory Değişkeni  :  %s\n\n" % (resp, exp)
-        self.result += "     Intercept     :  %.4f\n" %(intercept)
-        self.result += "     Slope           :  %.4f\n"  %(slope)
-        self.result += "     R-squared   :  %.4f\n"  %(r_value**2)
-        self.result += "     P-value       :  %.4f\n"  %(p_value)
-        self.result += "     Std. Error   :  %.4f\n"  %(std_err)
+        self.result += "     Intercept     :  %.3f\n" %(intercept)
+        self.result += "     Slope           :  %.3f\n"  %(slope)
+        self.result += "     R-squared   :  %.3f\n"  %(r_value**2)
+        self.result += "     P-value       :  %.3f\n"  %(p_value)
+        self.result += "     Std. Error   :  %.3f\n"  %(std_err)
 
         return self.result
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Linear Regression", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Lineer Regresyon", None))
         self.btnTamam.setText(_translate("Dialog", "Tamam", None))
         self.btnIptal.setText(_translate("Dialog", "Temizle", None))
-        self.label.setText(_translate("Dialog", "Response Variable\n", None))
-        self.label_2.setText(_translate("Dialog", "Explanatory Variables\n", None))
+        self.label.setText(_translate("Dialog", "Response Değişkenleri", None))
+        self.label_2.setText(_translate("Dialog", "Explanatory Değişkenleri", None))
 

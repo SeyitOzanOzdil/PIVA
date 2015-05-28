@@ -32,8 +32,8 @@ class Ui_SummariesParams(object):
         groupBox.setFlat(True)
         vbox = QVBoxLayout()
         if amac.find(u"Sütun") == -1:
-            self.data = ["Mean", "Median", "Ortalama", "Standard Deviation", "Variance",
-                         "Quantiles", "Co-Variance", "Correlation"]
+            self.data = ["Ortalama (Mean)", "Medyan (Median)", "Standard Sapma", "Varyans (Variance)",
+                         u"Ceyrek (Quantiles)", u"Ko-Varyans (Co-Variance)", u"Iliski (Correlation)"]
 
         for i in self.data:
             cb = fonk(i)
@@ -50,6 +50,13 @@ class Ui_SummariesParams(object):
     def create_cb_istatistik(self, feature):
         cb = QCheckBox(feature)
         cb.stateChanged.connect(self.checkedStatistic)
+        if str(cb.text()).find("Mean") != -1:
+            cb.setChecked(True)
+        if str(cb.text()).find("Median") != -1:
+            cb.setChecked(True)
+        if str(cb.text()).find("Standard Sapma") != -1:
+            cb.setChecked(True)
+
         return cb
 
     def checkedStatistic(self, state):
@@ -67,36 +74,50 @@ class Ui_SummariesParams(object):
             self.listEleman.remove(str(source.text()))
 
     def istatistikHesapla(self):
-        self.result = ""
+        self.result = "           Min   Max   "
+        if "Ortalama (Mean)" in self.listStatistic:
+            self.result += "  Ort    "
+        if "Medyan (Median)" in self.listStatistic:
+            self.result += "     Medyan   "
+        if "Standard Sapma" in self.listStatistic:
+            self.result += "Std    "
+        if "Varyans (Variance)" in self.listStatistic:
+            self.result += "   Var    "
+        if "Ceyrek (Quantiles)" in self.listStatistic:
+            self.result += "   %25    "
+            self.result += "  %50    "
+            self.result += "  %75    "
+            self.result += " IQR    "
+
+        self.result += "\n"
         if len(self.listEleman) > 0:
             for column in self.listEleman:
                 values = list()
                 for i in self.dataset.dataSetDic[column]:
                     values.append(i.value)
                 self.result += column + "\n"
-                self.result += "      Minimum : " + str(Statistical.minimum(values)) + "\n"
-                self.result += "      Maximum : " + str(Statistical.maximum(values)) + "\n"
+                self.result += "         " + str(Statistical.minimum(values))
+                self.result += "   " + str(Statistical.maximum(values))
+
                 for stat in self.listStatistic:
-                    if str(stat) == 'Quantiles':
-                        self.result += "      Quantiles : \n\t%25 : "+ str(Statistical.quantiles(values,25)) +\
-                                       "\n\t%50 : "+ str(Statistical.quantiles(values,50)) +\
-                                       "\n\t%75 : "+ str(Statistical.quantiles(values,75)) +\
-                                       "\n\tIQR  : "+ str(Statistical.quantiles(values,75)-Statistical.quantiles(values,25))\
-                                       +"\n"
-                    if str(stat) == 'Mean':
-                        self.result += "      Mean : " + str(Statistical.mean(values)) + "\n"
-                    if str(stat) == 'Median':
-                      self.result += "      Median : " + str(Statistical.median(values)) + "\n"
-                    if str(stat) == 'Ortalama':
-                      self.result += "      Ortalama : " + str(Statistical.average(values)) + "\n"
-                    if str(stat) == 'Standard Deviation':
-                      self.result += "      Standard Deviation : " + str(Statistical.standardDeviation(values)) + "\n"
-                    if str(stat) == 'Variance':
-                        self.result += "      Variance : " + str(Statistical.variance(values)) + "\n"
+                    if str(stat).find('Quantiles') != -1 :
+                        self.result += "    "+ str(Statistical.quantiles(values,25)) +\
+                                       "     "+ str(Statistical.quantiles(values,50)) +\
+                                       "     "+ str(Statistical.quantiles(values,75)) +\
+                                       "     "+ str(Statistical.quantiles(values,75)-Statistical.quantiles(values,25))
+
+                    if str(stat).find('Mean') != -1:
+                        self.result += "    %.3f" %(Statistical.mean(values))
+                    if str(stat).find('Median') != -1:
+                      self.result += "    %.3f" %(Statistical.median(values))
+                    if str(stat).find('Standard Sapma') != -1:
+                      self.result += "   %.3f" %(Statistical.standardDeviation(values))
+                    if str(stat).find('(Variance)') != -1:
+                        self.result += "    %.3f" %(Statistical.variance(values))
 
                 self.result += "\n"
-                
-            if ('Co-Variance' in self.listStatistic or 'Correlation' in self.listStatistic):
+
+            if ('Ko-Varyans (Co-Variance)' in self.listStatistic or 'Iliski (Correlation)' in self.listStatistic):
                 if len(self.listEleman) == 2:
                     list1 = list()
                     list2 = list()
@@ -104,10 +125,10 @@ class Ui_SummariesParams(object):
                         list1.append(i.value)
                     for i in self.dataset.dataSetDic[self.listEleman[1]]:
                         list2.append(i.value)
-                    if 'Co-Variance' in self.listStatistic:
-                        self.result += " Co-Variance : " + str(Statistical.coVariance(list1, list2)) + "\n"
-                    if 'Correlation' in self.listStatistic:
-                        self.result += " Correlation  : " + str(Statistical.correlation(list1, list2)) + "\n"
+                    if 'Ko-Varyans (Co-Variance)' in self.listStatistic:
+                        self.result += "\n Ko-Varyans : %.3f\n" %(Statistical.coVariance(list1, list2))
+                    if 'Iliski (Correlation)' in self.listStatistic:
+                        self.result += "\n Iliski (Correlation)  : %.3f\n" %(Statistical.correlation(list1, list2))
                 else:
                     Errors.ShowWarningMsgBox(self, u"Seçili istatistik işlemleri için iki eleman seçilmelidir!")
 

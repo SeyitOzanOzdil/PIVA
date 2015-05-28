@@ -19,6 +19,7 @@ import ChartCreator
 import Utils
 import General_Func
 import Distributions
+import VerisetiIslemleri
 
 import Dlg_PieChartParams
 import Dlg_BarChartParams
@@ -471,6 +472,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionYeniVeri.setObjectName("actionYeniVeri")
         self.menuData.addAction(self.actionYeniVeri)
 
+        self.actionTabloOperations = QtGui.QAction(MainWindow)
+        self.actionTabloOperations.setObjectName("actionTabloOperations")
+        self.menuData.addAction(self.actionTabloOperations)
+
         self.actionHelp = QtGui.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
         self.menuYardim.addAction(self.actionHelp)
@@ -544,6 +549,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.actionOrnekVeri, QtCore.SIGNAL("triggered()"), self.CallOrnekVeri)
 
         self.connect(self.actionYeniVeri, QtCore.SIGNAL("triggered()"), self.CallYeniVeri)
+        self.connect(self.actionTabloOperations, QtCore.SIGNAL("triggered()"), self.CallTabloOperations)
 
         self.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), self.CallHelp)
         #--------------END OF SIGNALS-----------------------#
@@ -659,6 +665,25 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.col_count -= len(items)
         self.table.setColumnCount(self.col_count)
         self.WriteLog("Seçili sütun/sütunlar başarılı bir şekilde silindi.")
+
+    def CallTabloOperations(self):
+        self.CheckLayoutParams()
+        try:
+            if self.table:
+                try:
+                    self.dlgTablo = StartTabloOperations()
+                    self.SetDlgParamsTitle(u"Veriseti İşlemleri")
+
+                    self.gridLayout_Params.addWidget(self.dlgTablo, 0, 0, 1, 1)
+
+                    self.dlgTablo.btnSatirEkle.clicked.connect(self.Add_row)
+                    self.dlgTablo.btnSatirSil.clicked.connect(self.Delete_row)
+                    self.dlgTablo.btnSutunEkle.clicked.connect(self.Add_clm)
+                    self.dlgTablo.btnSutunSil.clicked.connect(self.Del_clm)
+                except:
+                    Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+        except:
+            Errors.ShowWarningMsgBox(self, u"Bu işlemlerden önce boş veriseti oluşturmanız gerekmektedir.")
 
     def SaveFile(self):
         try:
@@ -874,7 +899,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.clearOutput()
         self.WriteLog("Tek grup t-testi hesaplanıyor..")
         try:
-            self.WriteOutput("t skoru: "+str(self.dlgOstt.t_score)+"\n p değeri: "+str(self.dlgOstt.pvalue))
+            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f" %(self.dlgOstt.t_score, self.dlgOstt.pvalue))
             self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Tek Grup t-Testi Hesaplanamadı: " + e.message)
@@ -914,10 +939,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.clearOutput()
         self.WriteLog("Bağımsız iki grup t-testi hesaplanıyor..")
         try:
-            self.WriteOutput("t skoru: "+str(self.dlgItstt.t_score)+"\n p değeri: "+str(self.dlgItstt.pvalue))
+            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f"
+                             %(self.dlgItstt.t_score, self.dlgItstt.pvalue))
             samples = self.dlgItstt.means.keys()
-            self.WriteOutput(samples[0]+" için ortalama: "+str(self.dlgItstt.means[samples[0]])+
-            "\n"+samples[1]+" için ortalama: "+str(self.dlgItstt.means[samples[1]]))
+            self.WriteOutput(samples[0]+" için ortalama : %.3f\n%s için ortalama : %.3f"
+                             %(self.dlgItstt.means[samples[0]], samples[1], self.dlgItstt.means[samples[1]]))
             self.WriteLog("Bağımsız İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
@@ -943,9 +969,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.clearOutput()
         self.WriteLog("Bağımlı iki grup t-testi hesaplanıyor..")
         try:
-            self.WriteOutput("t skoru: "+str(self.dlgPts.t_score)+"\n p değeri: "+str(self.dlgPts.pvalue))
-            self.WriteOutput("İlk örneklem için ortalama: "+str(self.dlgPts.means[0])+
-            "\nİkinci örneklem için ortalama: "+str(self.dlgPts.means[1]))
+            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f"
+                             %(self.dlgPts.t_score, self.dlgPts.pvalue))
+            self.WriteOutput("İlk örneklem için ortalama : %.3f\nİkinci örneklem için ortalama : %.3f"
+                             %(self.dlgPts.means[0], self.dlgPts.means[1]))
+
             self.WriteLog("Bağımlı İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             if not self.dlgPts.no_exeption:
@@ -1004,17 +1032,17 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
             self.WriteOutput("              SS          DF        MS          F")
             self.WriteOutput("SSW  "+
-                             "    "+str("%.2f" %(self.dlgAnova.SSW))+
-                             "    "+str("%.2f" %(self.dlgAnova.dfW))+
-                             "    "+str("%.2f" %(self.dlgAnova.MSW))+
-                             "    "+str("%.2f" %(self.dlgAnova.F)))
+                             "    "+str("%.3f" %(self.dlgAnova.SSW))+
+                             "    "+str("%.3f" %(self.dlgAnova.dfW))+
+                             "    "+str("%.3f" %(self.dlgAnova.MSW))+
+                             "    "+str("%.3f" %(self.dlgAnova.F)))
             self.WriteOutput("SSB   "+
-                             "    "+str("%.2f" %(self.dlgAnova.SSB))+
-                             "    "+str("%.2f" %(self.dlgAnova.dfB))+
-                             "    "+str("%.2f" %(self.dlgAnova.MSB)))
+                             "    "+str("%.3f" %(self.dlgAnova.SSB))+
+                             "    "+str("%.3f" %(self.dlgAnova.dfB))+
+                             "    "+str("%.3f" %(self.dlgAnova.MSB)))
             self.WriteOutput("TOTAL"+
-                             "    "+str("%.2f" %(self.dlgAnova.SSW+self.dlgAnova.SSB))+
-                             "    "+str("%.2f" %(self.dlgAnova.dfW+self.dlgAnova.dfB)))
+                             "    "+str("%.3f" %(self.dlgAnova.SSW+self.dlgAnova.SSB))+
+                             "    "+str("%.3f" %(self.dlgAnova.dfW+self.dlgAnova.dfB)))
             self.WriteLog("Anova Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
@@ -1031,7 +1059,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             else:
                 Errors.ShowInfoMsgBox(self, "Verisetinde uygun ozellik yer almamaktadır.")
 
-            self.SetDlgParamsTitle(u"Linear Regression Parametreleri")
+            self.SetDlgParamsTitle(u"Lineer Regresyon Parametreleri")
             self.gridLayout_Params.addWidget(self.dlgLinear, 0, 0, 1, 1)
             self.dlgLinear.btnTamam.clicked.connect(self.FindLinearRegression)
         except:
@@ -1039,10 +1067,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def FindLinearRegression(self):
         self.clearOutput()
-        self.WriteLog("Linear Regression hesaplanıyor..")
+        self.WriteLog("Lineer Regresyon hesaplanıyor..")
         try:
+
             self.WriteOutput(self.dlgLinear.regressionHesapla())
-            self.WriteLog("Linear Regression başarılı bir şekilde hesaplandı.")
+            self.WriteLog("Lineer Regresyon başarılı bir şekilde hesaplandı.")
             
             # regression için chart çizdiren kısım
             try:
@@ -1061,7 +1090,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.WriteLog("Şekil Şukul cizdirilemedi: "+ e.message)
 
         except Exception, e:
-            self.WriteLog("Linear Regression Hesaplanamadi: " + e.message)
+            if e.message.find("NoneType") != -1:
+                Errors.ShowWarningMsgBox(self, u"Lütfen zorunlu değişkenleri seçiniz!")
+            else:
+                self.WriteLog("Lineer Regresyon Hesaplanamadi: " + e.message)
 
 
     def CallKmeans(self):
@@ -1871,13 +1903,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_itstt.setText(_translate("MainWindow", "Bağımsız İki Grup T Testi", None))
         self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar T Testi", None))
         self.action_anova.setText(_translate("MainWindow", "Anova Testi", None))
-        self.actionLinearRegression.setText(_translate("MainWindow", "Linear Regression", None))
+        self.actionLinearRegression.setText(_translate("MainWindow", "Lineer Regresyon", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
         self.actionOrnekVeri.setText(_translate("MainWindow", "Örnek Verisetleri", None))
 
         self.actionYeniVeri.setText(_translate("MainWindow", "Yeni Veriseti Oluştur", None))
+        self.actionTabloOperations.setText(_translate("MainWindow", "Veriseti İşlemleri", None))
 
         self.actionHelp.setText(_translate("MainWindow", "PIVA Yardım", None))
 
@@ -2056,6 +2089,10 @@ class StartLinearRegression(QtGui.QDialog, Linear_Regression.Ui_Dialog):
         QtGui.QDialog.__init__(self,parent)
         self.setupUi(self, dataset)
 
+class StartTabloOperations(QtGui.QDialog, VerisetiIslemleri.Ui_Form):
+    def __init__(self, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self)
 
         ### MAIN ###
 if __name__ == "__main__":
