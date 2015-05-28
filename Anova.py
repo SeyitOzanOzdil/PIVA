@@ -2,6 +2,9 @@
 
 from PyQt4 import QtCore, QtGui
 import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -23,9 +26,9 @@ class Ui_Form(object):
         self.others = others
         self.dataset = dataset
 
-        self.setFixedSize(400, 300)
+        self.setFixedSize(300, 200)
         self.gridLayoutWidget = QtGui.QWidget(Form)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 90, 246, 83))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 40, 246, 83))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
@@ -46,7 +49,7 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.ok)
         self.ok.clicked.connect(self.accept)
 
-        self.gridLayout.addLayout(self.horizontalLayout, 2, 1, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 3, 1, 1, 1)
 
         self.label_2 = QtGui.QLabel(self.gridLayoutWidget)
         self.label_2.setObjectName(_fromUtf8("label_2"))
@@ -84,6 +87,19 @@ class Ui_Form(object):
         self.feature_combo.setSizePolicy(sizePolicy)
         self.feature_combo.setObjectName(_fromUtf8("feature_combo"))
         self.horizontalLayout_2.addWidget(self.feature_combo)
+
+        """
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.label = QtGui.QLabel(self.gridLayoutWidget)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.horizontalLayout_3.addWidget(self.label)
+        self.con_edit = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.con_edit.setObjectName(_fromUtf8("con_edit"))
+        self.con_edit.setText("0.05")
+        self.horizontalLayout_3.addWidget(self.con_edit)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 1)
+        """
 
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
@@ -134,6 +150,15 @@ class Ui_Form(object):
         self.MSW = self.SSW / self.dfW
         # Calculate the F-statistic
         self.F = self.MSB / self.MSW
+        self.F_critical = stats.distributions.f.ppf(1 - 0.05, self.dfB, self.dfW)
+
+        # chart için hesaplanan değerler
+        self.x_plot = np.linspace(0, 5, 250)
+        self.y_plot = stats.distributions.f.pdf(self.x_plot, self.dfB, self.dfW)
+
+        self.x_fcrit = np.linspace(self.F_critical, 5, 250)
+        self.y_fcrit = stats.distributions.f.pdf(self.x_fcrit, self.dfB, self.dfW)
+
 
     def changeGroup(self, var):
         self.currentGroup = var
@@ -147,4 +172,6 @@ class Ui_Form(object):
         self.help.setText(_translate("Form", "Yardım", None))
         self.ok.setText(_translate("Form", "Tamam", None))
         self.label_2.setText(_translate("Form", "Test Değişkenleri", None))
+        #self.label.setText(_translate("Form", "Güven aralığı  ", None))
+
 

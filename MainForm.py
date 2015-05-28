@@ -790,7 +790,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
             return
 
         self.recentFilesPath = 'RecentFiles'
-
         self.ControlRecentFiles()
 
     def AddRecentFile(self):
@@ -840,9 +839,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def CallAboutPiva(self):
 
         dlg = StartDlgAboutPiva()
-
         if dlg.exec_():
-
             a=0
 
     def CallOrnekVeri(self):
@@ -1043,7 +1040,28 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteOutput("TOTAL"+
                              "    "+str("%.3f" %(self.dlgAnova.SSW+self.dlgAnova.SSB))+
                              "    "+str("%.3f" %(self.dlgAnova.dfW+self.dlgAnova.dfB)))
+
+            self.WriteOutput("\nF değeri           :  %.3f" %(self.dlgAnova.F))
+            self.WriteOutput("F-kritik değeri  :  %.3f" %(self.dlgAnova.F_critical))
+            if self.dlgAnova.F > self.dlgAnova.F_critical:
+                self.WriteOutput("\nF değeri F-kritik değerinden büyük olduğu için Null Hipotez RED edilir.")
             self.WriteLog("Anova Testi Başarılı Bir Şekilde Hesaplandı.")
+            ChartCreator.CreateAnovaResult(self.dlgAnova.x_plot, self.dlgAnova.y_plot, self.dlgAnova.x_fcrit,
+                                           self.dlgAnova.y_fcrit, self.dlgAnova.F_critical)
+            #  chart çizdiren kısım
+
+            try:
+                self.WriteLog("Anova için grafik çizdiriliyor...")
+                self.main_frame = ChartCreator.CreateAnovaResult(self.dlgAnova.x_plot, self.dlgAnova.y_plot, self.dlgAnova.x_fcrit,
+                                           self.dlgAnova.y_fcrit, self.dlgAnova.F_critical)
+
+                self.CheckLayoutGraphs()
+
+                self.gridLayout_Graphs.addWidget(self.main_frame, 0, 0, 1, 1)
+                self.WriteLog("Anova için grafik başarılı bir şekilde çizdirildi.")
+
+            except Exception,e:
+                self.WriteLog("Anova için grafik cizdirilemedi: "+ e.message)
         except Exception, e:
             self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
 
@@ -1084,10 +1102,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 self.CheckLayoutGraphs()
 
                 self.gridLayout_Graphs.addWidget(self.main_frame, 0, 0, 1, 1)
-                self.WriteLog("Şekil Şukul başarılı bir şekilde çizdirildi.")
+                self.WriteLog("Lineer regresyon grafiği başarılı bir şekilde çizdirildi.")
 
             except Exception,e:
-                self.WriteLog("Şekil Şukul cizdirilemedi: "+ e.message)
+                self.WriteLog("Lineer regresyon grafiği çizdirilemedi: "+ e.message)
 
         except Exception, e:
             if e.message.find("NoneType") != -1:

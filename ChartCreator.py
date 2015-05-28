@@ -325,3 +325,37 @@ def CreateRegression(x, y):
     canvas.draw()
 
     return main_frame
+
+def CreateAnovaResult(x_plot, y_plot, x_fcrit, y_fcrit, F_critical):
+
+    main_frame = QtGui.QWidget()
+
+    dpi = 100
+    fig = Figure((5.0, 4.0), dpi=dpi)
+    canvas = FigureCanvas(fig)
+    canvas.setParent(main_frame)
+    axes = fig.add_subplot(111)
+
+    mpl_toolbar = NavigationToolbar(canvas, main_frame)
+    hbox = QtGui.QHBoxLayout()
+    vbox = QtGui.QVBoxLayout()
+    vbox.addWidget(canvas)
+    vbox.addWidget(mpl_toolbar)
+    vbox.addLayout(hbox)
+
+    main_frame.setLayout(vbox)
+
+    axes.clear()
+
+    # Plot the F-Distribution for dfB and dfW
+
+    axes.fill_between(x_plot, y_plot, alpha=.2)
+    axes.plot(x_plot, y_plot)
+    # Plot the F-critical value at alpha .05
+    axes.fill_between(x_fcrit, y_fcrit, alpha=.5)
+    axes.text(F_critical, .07, '$F_{critical}=$'+str(F_critical))
+    axes.set_xlabel(u'F-degerleri')
+    axes.set_ylabel(u'Olasilik')
+
+    canvas.draw()
+    return main_frame
