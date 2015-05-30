@@ -894,12 +894,21 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def calculateOstt(self):
         self.clearOutput()
-        self.WriteLog("Tek grup t-testi hesaplanıyor..")
-        try:
-            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f" %(self.dlgOstt.t_score, self.dlgOstt.pvalue))
-            self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
-        except Exception, e:
-            self.WriteLog("Tek Grup t-Testi Hesaplanamadı: " + e.message)
+        if self.dlgOstt.h0_edit.text():
+            self.WriteLog("Tek grup t-testi hesaplanıyor..")
+            try:
+                self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f\n" %(self.dlgOstt.t_score, self.dlgOstt.pvalue))
+                self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgOstt.P_obs))
+                if abs(self.dlgOstt.t_score) > abs(self.dlgOstt.P_obs):
+                    self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+                else:
+                    self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
+
+                self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
+            except Exception, e:
+                self.WriteLog("Tek Grup t-Testi Hesaplanamadı: " + e.message)
+        else:
+            Errors.ShowWarningMsgBox(self, u"Lütfen null hipotez değerini giriniz.")
 
     def Itstt(self):
         from collections import Counter
@@ -936,11 +945,17 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.clearOutput()
         self.WriteLog("Bağımsız iki grup t-testi hesaplanıyor..")
         try:
-            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f"
+            self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f"
                              %(self.dlgItstt.t_score, self.dlgItstt.pvalue))
             samples = self.dlgItstt.means.keys()
-            self.WriteOutput(samples[0]+" için ortalama : %.3f\n%s için ortalama : %.3f"
+            self.WriteOutput(samples[0]+" için ortalama : %.3f\n%s için ortalama : %.3\nf"
                              %(self.dlgItstt.means[samples[0]], samples[1], self.dlgItstt.means[samples[1]]))
+
+            self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgItstt.P_obs))
+            if abs(self.dlgItstt.t_score) > abs(self.dlgItstt.P_obs):
+                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+            else:
+                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
             self.WriteLog("Bağımsız İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
@@ -966,11 +981,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.clearOutput()
         self.WriteLog("Bağımlı iki grup t-testi hesaplanıyor..")
         try:
-            self.WriteOutput("t skoru    :  %.3f\n p değeri :  %.3f"
+            self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f"
                              %(self.dlgPts.t_score, self.dlgPts.pvalue))
-            self.WriteOutput("İlk örneklem için ortalama : %.3f\nİkinci örneklem için ortalama : %.3f"
+            self.WriteOutput("İlk örneklem için ortalama : %.3f\nİkinci örneklem için ortalama : %.3f\n"
                              %(self.dlgPts.means[0], self.dlgPts.means[1]))
 
+            self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgPts.P_obs))
+            if abs(self.dlgPts.t_score) > abs(self.dlgPts.P_obs):
+                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+            else:
+                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
             self.WriteLog("Bağımlı İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             if not self.dlgPts.no_exeption:
@@ -1045,6 +1065,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteOutput("F-kritik değeri  :  %.3f" %(self.dlgAnova.F_critical))
             if self.dlgAnova.F > self.dlgAnova.F_critical:
                 self.WriteOutput("\nF değeri F-kritik değerinden büyük olduğu için Null Hipotez RED edilir.")
+            else:
+                self.WriteOutput("\nF değeri F-kritik değerinden küçük olduğu için Null Hipotez KABUL edilir.")
             self.WriteLog("Anova Testi Başarılı Bir Şekilde Hesaplandı.")
             ChartCreator.CreateAnovaResult(self.dlgAnova.x_plot, self.dlgAnova.y_plot, self.dlgAnova.x_fcrit,
                                            self.dlgAnova.y_fcrit, self.dlgAnova.F_critical)
@@ -1080,6 +1102,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.SetDlgParamsTitle(u"Lineer Regresyon Parametreleri")
             self.gridLayout_Params.addWidget(self.dlgLinear, 0, 0, 1, 1)
             self.dlgLinear.btnTamam.clicked.connect(self.FindLinearRegression)
+            self.dlgLinear.btnHelp.clicked.connect(self.CallHelp)
         except:
             Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
 

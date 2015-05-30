@@ -20,10 +20,10 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form, dataset, featrures):
         Form.setObjectName(_fromUtf8("Form"))
-        self.setFixedSize(400, 300)
+        self.setFixedSize(340, 270)
         self.dataset = dataset
         self.gridLayoutWidget = QtGui.QWidget(Form)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 30, 326, 211))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 20, 326, 211))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -145,7 +145,11 @@ class Ui_Form(object):
 
         else:
             self.t_score, self.pvalue = stats.ttest_rel(first_sample, second_sample)
-            self. df = len(first_sample)-1
+            if len(first_sample) < len(second_sample):
+                self.df = len(first_sample)-1
+            else:
+                self.df = len(second_sample)-1
+
             mean1 = sum(first_sample)/len(first_sample)
             mean2 = sum(second_sample)/len(second_sample)
             self.means = [mean1, mean2]
@@ -157,6 +161,8 @@ class Ui_Form(object):
             elif self.radio_less.isChecked():
                 self.pvalue /= 2
 
+            self.P_obs = stats.t.ppf(1-(con/2.0), self.df)
+
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Bağımlı İki Grup t Testi", None))
         self.radio_noteq.setText(_translate("Form", "İki taraflı", None))
@@ -164,7 +170,7 @@ class Ui_Form(object):
         self.radio_greater.setText(_translate("Form", "Fark > 0", None))
         self.label_4.setText(_translate("Form", "Birinci Değişken", None))
         self.label_3.setText(_translate("Form", "İkinci Değişken", None))
-        self.reset.setText(_translate("Form", "Reset", None))
+        self.reset.setText(_translate("Form", "Temizle", None))
         self.ok.setText(_translate("Form", "Tamam", None))
         self.help.setText(_translate("Form", "Yardım", None))
         self.label.setText(_translate("Form", "Güven aralığı  ", None))

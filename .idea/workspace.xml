@@ -13,7 +13,8 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/amuaq$MainForm__1_.coverage" NAME="MainForm (1) Coverage Results" MODIFIED="1432851510386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/amuaq$MainForm__1_.coverage" NAME="MainForm (1) Coverage Results" MODIFIED="1432990407966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/amuaq$Dlg_AboutPIVA.coverage" NAME="Dlg_AboutPIVA Coverage Results" MODIFIED="1432984268047" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/amuaq$Dlg_Summaries.coverage" NAME="Dlg_Summaries Coverage Results" MODIFIED="1429529879804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/amuaq$MainForm.coverage" NAME="MainForm Coverage Results" MODIFIED="1426796545319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PIVA" />
     <SUITE FILE_PATH="coverage/amuaq$MissingValue.coverage" NAME="MissingValue Coverage Results" MODIFIED="1432144525580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -31,23 +32,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainForm.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MainForm.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MainForm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="17529" max-vertical-offset="36210">
-              <caret line="1054" column="34" selection-start-line="1054" selection-start-column="34" selection-end-line="1054" selection-end-column="34" />
-              <folding>
-                <element signature="e#25#35#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.35416666" vertical-offset="15402" max-vertical-offset="35615">
+              <caret line="976" column="52" selection-start-line="976" selection-start-column="52" selection-end-line="976" selection-end-column="52" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Paired_t_test.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Paired_t_test.py">
+      <file leaf-file-name="One_sample_t_test.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/One_sample_t_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2416" max-vertical-offset="2992">
-              <caret line="169" column="46" selection-start-line="169" selection-start-column="46" selection-end-line="169" selection-end-column="63" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1539" max-vertical-offset="2414">
+              <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -56,33 +55,29 @@
       <file leaf-file-name="Two_sample_t_test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Two_sample_t_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3198" max-vertical-offset="4420">
-              <caret line="205" column="32" selection-start-line="205" selection-start-column="32" selection-end-line="205" selection-end-column="32" />
+            <state vertical-scroll-proportion="-4.06" vertical-offset="3248" max-vertical-offset="3774">
+              <caret line="204" column="33" selection-start-line="204" selection-start-column="30" selection-end-line="204" selection-end-column="33" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Anova.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Anova.py">
+      <file leaf-file-name="Paired_t_test.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Paired_t_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5504087" vertical-offset="2535" max-vertical-offset="3111">
-              <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-              <folding>
-                <element signature="e#25#56#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2348" max-vertical-offset="3094">
+              <caret line="165" column="34" selection-start-line="165" selection-start-column="34" selection-end-line="165" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChartCreator.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ChartCreator.py">
+      <file leaf-file-name="Linear_Regression.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Linear_Regression.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5646" max-vertical-offset="6222">
-              <caret line="357" column="30" selection-start-line="357" selection-start-column="30" selection-end-line="357" selection-end-column="30" />
-              <folding>
-                <element signature="e#1#10#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="1498" max-vertical-offset="2108">
+              <caret line="116" column="59" selection-start-line="116" selection-start-column="52" selection-end-line="116" selection-end-column="59" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -98,16 +93,17 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/FileOperations.py" />
-        <option value="$PROJECT_DIR$/One_sample_t_test.py" />
-        <option value="$PROJECT_DIR$/Paired_t_test.py" />
-        <option value="$PROJECT_DIR$/Two_sample_t_test.py" />
         <option value="$PROJECT_DIR$/Dlg_Summaries.py" />
         <option value="$PROJECT_DIR$/TabloIslemleri.py" />
         <option value="$PROJECT_DIR$/VerisetiIslemleri.py" />
-        <option value="$PROJECT_DIR$/Linear_Regression.py" />
-        <option value="$PROJECT_DIR$/MainForm.py" />
         <option value="$PROJECT_DIR$/ChartCreator.py" />
         <option value="$PROJECT_DIR$/Anova.py" />
+        <option value="$PROJECT_DIR$/Dlg_AboutPIVA.py" />
+        <option value="$PROJECT_DIR$/Linear_Regression.py" />
+        <option value="$PROJECT_DIR$/One_sample_t_test.py" />
+        <option value="$PROJECT_DIR$/Two_sample_t_test.py" />
+        <option value="$PROJECT_DIR$/Paired_t_test.py" />
+        <option value="$PROJECT_DIR$/MainForm.py" />
       </list>
     </option>
   </component>
@@ -184,25 +180,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.MainForm (1)">
-    <configuration default="false" name="MainForm" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PIVA" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="amuaq" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PIVA/MainForm.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="MainForm (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -274,6 +251,25 @@
       <module name="amuaq" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MissingValue.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Dlg_AboutPIVA" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="amuaq" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dlg_AboutPIVA.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -430,19 +426,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.MainForm" />
-      <item index="1" class="java.lang.String" itemvalue="Python.MainForm (1)" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Dlg_Summaries" />
-      <item index="3" class="java.lang.String" itemvalue="Python.New_Column" />
-      <item index="4" class="java.lang.String" itemvalue="Python.MissingValue" />
+      <item index="0" class="java.lang.String" itemvalue="Python.MainForm (1)" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Dlg_Summaries" />
+      <item index="2" class="java.lang.String" itemvalue="Python.New_Column" />
+      <item index="3" class="java.lang.String" itemvalue="Python.MissingValue" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Dlg_AboutPIVA" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.MainForm (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.MissingValue" />
-        <item index="2" class="java.lang.String" itemvalue="Python.New_Column" />
-        <item index="3" class="java.lang.String" itemvalue="Python.Dlg_Summaries" />
-        <item index="4" class="java.lang.String" itemvalue="Python.MainForm" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Dlg_AboutPIVA" />
+        <item index="2" class="java.lang.String" itemvalue="Python.MissingValue" />
+        <item index="3" class="java.lang.String" itemvalue="Python.New_Column" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Dlg_Summaries" />
       </list>
     </recent_temporary>
   </component>
@@ -467,7 +463,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37009063" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39199397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3398374" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -508,9 +504,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="12920" max-vertical-offset="29036">
           <caret line="760" column="32" selection-start-line="760" selection-start-column="32" selection-end-line="760" selection-end-column="32" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -532,9 +526,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="11522" max-vertical-offset="28186">
           <caret line="735" column="43" selection-start-line="735" selection-start-column="43" selection-end-line="735" selection-end-column="43" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -556,9 +548,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="12549" max-vertical-offset="29019">
           <caret line="752" column="53" selection-start-line="752" selection-start-column="47" selection-end-line="752" selection-end-column="53" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -580,9 +570,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="29019">
           <caret line="752" column="53" selection-start-line="752" selection-start-column="47" selection-end-line="752" selection-end-column="53" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -604,9 +592,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="15228" max-vertical-offset="29223">
           <caret line="907" column="54" selection-start-line="907" selection-start-column="54" selection-end-line="907" selection-end-column="54" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -642,9 +628,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="14488" max-vertical-offset="29529">
           <caret line="919" column="45" selection-start-line="919" selection-start-column="45" selection-end-line="919" selection-end-column="45" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -708,13 +692,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.4821732" vertical-offset="873" max-vertical-offset="1462">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Dlg_AboutPIVA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43095237" vertical-offset="295" max-vertical-offset="833">
-          <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -823,72 +800,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Linear_Regression.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68251276" vertical-offset="1315" max-vertical-offset="2006">
-          <caret line="103" column="48" selection-start-line="103" selection-start-column="48" selection-end-line="103" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Dlg_Summaries.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1413" max-vertical-offset="2346">
           <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ChartCreator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5646" max-vertical-offset="6222">
+        <state vertical-scroll-proportion="1.0885416" vertical-offset="5238" max-vertical-offset="6018">
           <caret line="357" column="30" selection-start-line="357" selection-start-column="30" selection-end-line="357" selection-end-column="30" />
-          <folding>
-            <element signature="e#1#10#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dlg_AboutPIVA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.73157895" vertical-offset="283" max-vertical-offset="816">
+          <caret line="36" column="81" selection-start-line="36" selection-start-column="81" selection-end-line="36" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Anova.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2886248" vertical-offset="255" max-vertical-offset="3094">
+          <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/One_sample_t_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.32894737" vertical-offset="1927" max-vertical-offset="2363">
-          <caret line="107" column="18" selection-start-line="107" selection-start-column="18" selection-end-line="107" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1539" max-vertical-offset="2414">
+          <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MainForm.py">
+    <entry file="file://$PROJECT_DIR$/Linear_Regression.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="17529" max-vertical-offset="36210">
-          <caret line="1054" column="34" selection-start-line="1054" selection-start-column="34" selection-end-line="1054" selection-end-column="34" />
-          <folding>
-            <element signature="e#25#35#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="1532" max-vertical-offset="2108">
+          <caret line="116" column="59" selection-start-line="116" selection-start-column="52" selection-end-line="116" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Two_sample_t_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3198" max-vertical-offset="4420">
-          <caret line="205" column="32" selection-start-line="205" selection-start-column="32" selection-end-line="205" selection-end-column="32" />
+        <state vertical-scroll-proportion="-4.06" vertical-offset="3248" max-vertical-offset="3774">
+          <caret line="204" column="33" selection-start-line="204" selection-start-column="30" selection-end-line="204" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Paired_t_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2416" max-vertical-offset="2992">
-          <caret line="169" column="46" selection-start-line="169" selection-start-column="46" selection-end-line="169" selection-end-column="63" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2518" max-vertical-offset="3094">
+          <caret line="165" column="34" selection-start-line="165" selection-start-column="34" selection-end-line="165" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Anova.py">
+    <entry file="file://$PROJECT_DIR$/MainForm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5504087" vertical-offset="2535" max-vertical-offset="3111">
-          <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-          <folding>
-            <element signature="e#25#56#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.35416666" vertical-offset="15402" max-vertical-offset="35615">
+          <caret line="976" column="52" selection-start-line="976" selection-start-column="52" selection-end-line="976" selection-end-column="52" />
+          <folding />
         </state>
       </provider>
     </entry>

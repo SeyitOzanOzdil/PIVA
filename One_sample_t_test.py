@@ -20,10 +20,10 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form, dataset):
         Form.setObjectName(_fromUtf8("Form"))
-        self.setFixedSize(400, 300)
+        self.setFixedSize(300, 180)
         self.dataset = dataset
         self.gridLayoutWidget = QtGui.QWidget(Form)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 30, 291, 141))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 20, 291, 141))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
@@ -105,7 +105,10 @@ class Ui_Form(object):
         h0 = float(self.h0_edit.text())
         con = float(self.con_edit.text())
         one_sample_data = self.dataset.GetNumericValues(self.currentVar)[0]
+        self.df = len(one_sample_data)-1
         self.t_score, self.pvalue = stats.ttest_1samp(one_sample_data, h0)
+
+        self.P_obs = stats.t.ppf(1-(con/2.0), self.df)
 
         if self.radio_noteq.isChecked():
             pass
@@ -130,6 +133,6 @@ class Ui_Form(object):
         self.radio_greater.setText(_translate("Form", "Ha > mu0", None))
         self.label_2.setText(_translate("Form", "   H0 mu         ", None))
         self.label.setText(_translate("Form", "Güven aralığı ", None))
-        self.reset.setText(_translate("Form", "Reset", None))
+        self.reset.setText(_translate("Form", "Temizle", None))
         self.ok.setText(_translate("Form", "Tamam", None))
         self.help.setText(_translate("Form", "Yardım", None))

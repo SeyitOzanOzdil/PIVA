@@ -32,9 +32,9 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.pic, 0,0,1,1)
         self.txt = QtGui.QLabel(Dialog)
         self.txt.setText("2014-All Rights Reserved "
-                         u"\n\nSeyit Ozan ÖZDİL \nYunus YILDIRIM \nVersion 2.0.0"
+                         u"\n\nVersion 2.0.0\n\nSeyit Ozan ÖZDİL \nYunus YILDIRIM"
                          "\n\n" + "*-*-*-*-*-*-*-*-*-*-*-*"
-                         "\n\nDilara OZIRMAK \nSerdar GOKCEN \n\nVersion 1.0.0")
+                         u"\n\nVersion 1.0.0\n\nDilara OZIRMAK \nSerdar GOKCEN \n")
         self.gridLayout.addWidget(self.txt, 1,0,1,1)
 
         self.retranslateUi(Dialog)

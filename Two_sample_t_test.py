@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
-from scipy.stats import ttest_ind
+from scipy.stats import ttest_ind, t
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -22,9 +22,9 @@ class Ui_Form(object):
         self.dataset = dataset
         self.appropriate = appropriate
         self.others = others
-        self.setFixedSize(400, 300)
+        self.setFixedSize(320, 270)
         self.gridLayoutWidget = QtGui.QWidget(Form)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 30, 301, 171))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 20, 301, 171))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -190,6 +190,11 @@ class Ui_Form(object):
         mean2 = sum(second_data)/len(second_data)
         self.means = {samples[0]:mean1, samples[1]:mean2}
 
+        if len(first_data) < len(second_data):
+            self.df = len(first_data)-1
+        else:
+            self.df = len(second_data)-1
+
         if self.radio_noteq.isChecked():
             pass
         elif self.radio_greater.isChecked():
@@ -197,8 +202,10 @@ class Ui_Form(object):
         elif self.radio_less.isChecked():
             self.pvalue /= 2
 
+        self.P_obs = t.ppf(1-(con/2.0), self.df)
+
     def retranslateUi(self, Form):
-        self.reset.setText(_translate("Form", "Reset", None))
+        self.reset.setText(_translate("Form", "Temizle", None))
         self.ok.setText(_translate("Form", "Tamam", None))
         self.help.setText(_translate("Form", "Yardım", None))
         self.radio_noteq.setText(_translate("Form", "İki Taraflı", None))
@@ -208,49 +215,3 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "    Güven aralığı  ", None))
         self.label_4.setText(_translate("Form", "Grup Seçiniz", None))
         self.label_3.setText(_translate("Form", "Özellik Seçiniz", None))
-
-
-
-
-
-
-
-
-
-
-
-
-'''import numpy as np
-from scipy.stats import ttest_ind
-from scipy.special import stdtr
-
-np.random.seed(1)
-
-# Create sample data.
-a = np.random.randn(40)
-b = 4*np.random.randn(50)
-
-# Use scipy.stats.ttest_ind.
-t, p = ttest_ind(a, b, equal_var=False)
-print "ttest_ind: t = %g  p = %g" % (t, p)
-
-# The following is basically the same as the implementation in
-# scipy.stats.ttest_ind.
-
-# Compute the descriptive statistics of a and b.
-abar = a.mean()
-avar = a.var(ddof=1)
-na = a.size
-adof = na - 1
-
-bbar = b.mean()
-bvar = b.var(ddof=1)
-nb = b.size
-bdof = nb - 1
-
-# Compute Welch's t-test using the descriptive statistics.
-tf = (abar - bbar) / np.sqrt(avar/na + bvar/nb)
-dof = (avar/na + bvar/nb)**2 / (avar**2/(na**2*adof) + bvar**2/(nb**2*bdof))
-pf = 2*stdtr(dof, -np.abs(tf))
-
-print "formula:   t = %g  p = %g" % (tf, pf)'''

@@ -31,13 +31,18 @@ class Ui_Dialog(object):
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
 
-        self.btnTamam = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.btnTamam.setObjectName(_fromUtf8("btnTamam"))
-        self.horizontalLayout.addWidget(self.btnTamam)
         self.btnIptal = QtGui.QPushButton(self.horizontalLayoutWidget)
         self.btnIptal.setObjectName(_fromUtf8("btnIptal"))
         self.horizontalLayout.addWidget(self.btnIptal)
         self.btnIptal.clicked.connect(self.temizle)
+
+        self.btnTamam = QtGui.QPushButton(self.horizontalLayoutWidget)
+        self.btnTamam.setObjectName(_fromUtf8("btnTamam"))
+        self.horizontalLayout.addWidget(self.btnTamam)
+
+        self.btnHelp = QtGui.QPushButton(self.horizontalLayoutWidget)
+        self.btnHelp.setObjectName(_fromUtf8("btnHelp"))
+        self.horizontalLayout.addWidget(self.btnHelp)
 
         self.gridLayoutWidget = QtGui.QWidget(Dialog)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 295, 155))
@@ -108,6 +113,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Lineer Regresyon", None))
         self.btnTamam.setText(_translate("Dialog", "Tamam", None))
+        self.btnHelp.setText(_translate("Dialog", "Yardım", None))
         self.btnIptal.setText(_translate("Dialog", "Temizle", None))
         self.label.setText(_translate("Dialog", "Response Değişkenleri", None))
         self.label_2.setText(_translate("Dialog", "Explanatory Değişkenleri", None))

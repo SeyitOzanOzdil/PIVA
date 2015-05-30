@@ -148,9 +148,11 @@ class Ui_Form(object):
         # Calculate the Mean squared difference
         self.MSB = self.SSB /self. dfB
         self.MSW = self.SSW / self.dfW
+
         # Calculate the F-statistic
         self.F = self.MSB / self.MSW
         self.F_critical = stats.distributions.f.ppf(1 - 0.05, self.dfB, self.dfW)
+
 
         # chart için hesaplanan değerler
         self.x_plot = np.linspace(0, 5, 250)
