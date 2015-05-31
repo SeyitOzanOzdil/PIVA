@@ -2,7 +2,6 @@
 
 from PyQt4 import QtCore, QtGui
 from scipy import stats
-import ChartCreator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
