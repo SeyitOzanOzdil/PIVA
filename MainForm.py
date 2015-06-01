@@ -861,9 +861,25 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.path = ""
 
     def Summaries(self):
+        from collections import Counter
         self.CheckLayoutParams()
+
+        features = self.myDataSet.features
+        appropriate = {}
+        others = []
+        for i in features:
+            if i in self.myDataSet.numericFeatures:
+                values = self.myDataSet.GetNumericValues(i)[0]
+            else:
+                values = self.myDataSet.GetNonNumericValues(i)[0]
+            tally = Counter(values)
+            if 1 < len(tally) < 5:
+                appropriate[i] = tally.keys()
+            else:
+                if i in self.myDataSet.numericFeatures:
+                    others.append(i)
         try:
-            self.dlgSummaries = StartDlgSummaries(self.myDataSet)
+            self.dlgSummaries = StartDlgSummaries(self.myDataSet, appropriate)
             self.SetDlgParamsTitle(u"İstatistiksel Özet Parametreleri")
 
             self.gridLayout_Params.addWidget(self.dlgSummaries, 0, 0, 1, 1)
@@ -2102,9 +2118,9 @@ class StartDialogMissing(QtGui.QDialog, MissingValue.Ui_Form):
 
 
 class StartDlgSummaries(QtGui.QDialog, Dlg_Summaries.Ui_SummariesParams):
-    def __init__(self, dataset, parent = None):
-        QtGui.QDialog.__init__(self,parent)
-        self.setupUi(self, dataset)
+    def __init__(self, dataset, appropriate, parent = None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setupUi(self, dataset, appropriate)
 
 class StartDlgOstt(QtGui.QDialog, One_sample_t_test.Ui_Form):
     def __init__(self, dataset, parent=None):

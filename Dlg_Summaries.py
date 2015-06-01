@@ -8,7 +8,7 @@ import Statistical
 import Errors
 
 class Ui_SummariesParams(object):
-    def setupUi(self, Dialog, dataset):
+    def setupUi(self, Dialog, dataset, appropriate):
         self.listEleman = []
         self.listStatistic = []
         self.result = ""
@@ -20,6 +20,21 @@ class Ui_SummariesParams(object):
 
         self.gridLayout.addWidget(self.ozellikler(self.create_cb_eleman, u'Sütun'), 0, 0)
         self.gridLayout.addWidget(self.ozellikler(self.create_cb_istatistik, u'İstatistiksel Hesaplama'), 0, 1)
+
+        vbox = QtGui.QHBoxLayout()
+
+        cb_combo = QtGui.QCheckBox(u"Grup Seç")
+        cb_combo.stateChanged.connect(self.isChecked)
+        vbox.addWidget(cb_combo)
+
+        self.combo = QtGui.QComboBox()
+        self.groups = appropriate.keys()
+        self.combo.addItems(self.groups)
+        self.combo.setEnabled(False)
+        self.connect(self.combo, SIGNAL('currentIndexChanged(QString)'), self.changeGroup)
+        vbox.addWidget(self.combo)
+
+        self.gridLayout.addLayout(vbox, 1, 0)
 
         self.pushButton = QtGui.QPushButton("Hesapla")
         self.pushButton.setObjectName("pushButton")
@@ -41,6 +56,17 @@ class Ui_SummariesParams(object):
         vbox.addStretch(1)
         groupBox.setLayout(vbox)
         return groupBox
+
+    def changeGroup(self, var):
+        self.currentGroup = var
+
+    def isChecked(self, state):
+        if state == Qt.Checked:
+            self.combo.setEnabled(True)
+            self.currentGroup = self.groups[0]
+        elif state == Qt.Unchecked:
+            self.combo.setEnabled(False)
+            self.currentGroup = 0
 
     def create_cb_eleman(self, feature):
         cb = QCheckBox(feature)
@@ -92,9 +118,22 @@ class Ui_SummariesParams(object):
         self.result += "\n"
         if len(self.listEleman) > 0:
             for column in self.listEleman:
-                values = list()
-                for i in self.dataset.dataSetDic[column]:
-                    values.append(i.value)
+                values = []
+                if self.currentGroup:
+                    samples = self.appropriate[self.currentGroup]
+                    for i in range(len(samples)):
+                        values.append([])
+
+                    group_values, counts = self.dataset.GetNumericValues(column)
+
+                    for i in range(1, len(group_values)+1):
+                        tmp = self.dataset.GetValue(self.currentGroup, i)
+                        index = samples.index(float(tmp))
+                        values[index].append(group_values[i-1])
+
+                else:
+                    for i in self.dataset.dataSetDic[column]:
+                        values.append(i.value)
                 self.result += column + "\n"
                 self.result += "         " + str(Statistical.minimum(values))
                 self.result += "   " + str(Statistical.maximum(values))
