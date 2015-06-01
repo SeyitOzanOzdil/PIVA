@@ -135,7 +135,7 @@ class Ui_Form(object):
 
     def accept(self):
         self.no_exeption = False
-        con = float(self.con_edit.text())
+        self.con = float(self.con_edit.text())
         first_sample, counts = self.dataset.GetNumericValues(self.currentGroup)
         second_sample, counts2 = self.dataset.GetNumericValues(self.currentVar)
         if first_sample == second_sample:
@@ -161,7 +161,7 @@ class Ui_Form(object):
             elif self.radio_less.isChecked():
                 self.pvalue /= 2
 
-            self.P_obs = stats.t.ppf(1-(con/2.0), self.df)
+            self.P_obs = stats.t.ppf(1-(self.con/2.0), self.df)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Bağımlı İki Grup t Testi", None))

@@ -103,12 +103,12 @@ class Ui_Form(object):
 
     def accept(self):
         h0 = float(self.h0_edit.text())
-        con = float(self.con_edit.text())
+        self.con = float(self.con_edit.text())
         one_sample_data = self.dataset.GetNumericValues(self.currentVar)[0]
         self.df = len(one_sample_data)-1
         self.t_score, self.pvalue = stats.ttest_1samp(one_sample_data, h0)
 
-        self.P_obs = stats.t.ppf(1-(con/2.0), self.df)
+        self.P_obs = stats.t.ppf(1-(self.con/2.0), self.df)
 
         if self.radio_noteq.isChecked():
             pass

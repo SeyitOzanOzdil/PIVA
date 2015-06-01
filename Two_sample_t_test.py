@@ -170,7 +170,7 @@ class Ui_Form(object):
         self.currentVar = var
 
     def accept(self):
-        con = float(self.con_edit.text())
+        self.con = float(self.con_edit.text())
         first_data = []
         second_data = []
         samples = self.appropriate[self.currentGroup]
@@ -202,7 +202,7 @@ class Ui_Form(object):
         elif self.radio_less.isChecked():
             self.pvalue /= 2
 
-        self.P_obs = t.ppf(1-(con/2.0), self.df)
+        self.P_obs = t.ppf(1-(self.con/2.0), self.df)
 
     def retranslateUi(self, Form):
         self.reset.setText(_translate("Form", "Temizle", None))

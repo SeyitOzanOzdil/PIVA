@@ -11,6 +11,7 @@ from py_expression_eval import Parser
 from PyQt4 import QtCore, QtGui
 from tables import indexes
 
+
 import Parsero
 import FileOperations
 import TableOperations
@@ -44,7 +45,10 @@ import Two_sample_t_test
 import Paired_t_test
 import Anova
 import Linear_Regression
-
+import Single_Sample_Wilcoxon
+import Two_Sample_Wilcoxon
+import Single_Sample_Proportion
+import Two_Sample_Proportion
 
 import webbrowser
 
@@ -192,10 +196,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuData = QtGui.QMenu(self.menubar)
         self.menuData.setObjectName(_fromUtf8("menuData"))
 
-        self.menuTable = QtGui.QMenu(self.menubar)
-        self.menuTable.setObjectName(_fromUtf8("menuTable"))
-        self.menuTable.setEnabled(False);
-
         self.menuStatistic = QtGui.QMenu(self.menubar)
         self.menuStatistic.setObjectName(_fromUtf8("menuStatistic"))
 
@@ -273,10 +273,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDelClm = QtGui.QAction(MainWindow)
         self.actionDelClm.setObjectName(_fromUtf8("actionDelClm"))
 
-        self.menuTable.addAction(self.actionAddRow)
-        self.menuTable.addAction(self.actionDelRow)
-        self.menuTable.addAction(self.actionAddClm)
-        self.menuTable.addAction(self.actionDelClm)
 
         # Menu Statistic Actions
         self.actionMean = QtGui.QAction(MainWindow)
@@ -294,15 +290,36 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_anova = QtGui.QAction(MainWindow)
         self.action_anova.setObjectName(_fromUtf8("action_anova"))
 
+        self.actionSingleWilcoxon = QtGui.QAction(MainWindow)
+        self.actionSingleWilcoxon.setObjectName(_fromUtf8("actionSingleWilcoxon"))
+
+        self.actionTwoWilcoxon = QtGui.QAction(MainWindow)
+        self.actionTwoWilcoxon.setObjectName(_fromUtf8("actionTwoWilcoxon"))
+
+        self.actionSingleProportion = QtGui.QAction(MainWindow)
+        self.actionSingleProportion.setObjectName(_fromUtf8("actionSingleProportion"))
+
+        self.actionTwoProportion = QtGui.QAction(MainWindow)
+        self.actionTwoProportion.setObjectName(_fromUtf8("actionTwoProportion"))
+
         self.actionLinearRegression = QtGui.QAction(MainWindow)
         self.actionLinearRegression.setObjectName(_fromUtf8("actionLinearRegression"))
 
         self.menuStatistic.addAction(self.actionMean)
         self.menuStatistic.addSeparator()
+
         self.menuStatistic.addAction(self.action_ostt)
         self.menuStatistic.addAction(self.action_itstt)
         self.menuStatistic.addAction(self.action_pts)
         self.menuStatistic.addAction(self.action_anova)
+
+        self.menuStatistic.addSeparator()
+        self.menuStatistic.addAction(self.actionSingleWilcoxon)
+        self.menuStatistic.addAction(self.actionTwoWilcoxon)
+        self.menuStatistic.addSeparator()
+        self.menuStatistic.addAction(self.actionSingleProportion)
+        self.menuStatistic.addAction(self.actionTwoProportion)
+
         self.menuStatistic.addSeparator()
         self.menuStatistic.addAction(self.actionLinearRegression)
 
@@ -362,7 +379,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         # Adding All Actions to Menubar
         self.menubar.addAction(self.menuDosya.menuAction())
         self.menubar.addAction(self.menuData.menuAction())
-        self.menubar.addAction(self.menuTable.menuAction())
         self.menubar.addAction(self.menuStatistic.menuAction())
         self.menubar.addAction(self.menuSiniflama.menuAction())
         self.menubar.addAction(self.menuKumeleme.menuAction())
@@ -527,6 +543,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.action_pts, QtCore.SIGNAL("triggered()"), self.Pts)
         self.connect(self.action_anova, QtCore.SIGNAL("triggered()"), self.Anova)
         self.connect(self.actionLinearRegression, QtCore.SIGNAL("triggered()"), self.LinearRegression)
+        self.connect(self.actionSingleWilcoxon, QtCore.SIGNAL("triggered()"), self.SingleWilcoxon)
+        self.connect(self.actionTwoWilcoxon, QtCore.SIGNAL("triggered()"), self.TwoWilcoxon)
+        self.connect(self.actionSingleProportion, QtCore.SIGNAL("triggered()"), self.SingleProportion)
+        self.connect(self.actionTwoProportion, QtCore.SIGNAL("triggered()"), self.TwoProportion)
         #-----------------End Statistic----------------------------#
 
         self.connect(self.actionNormalQuantiles, QtCore.SIGNAL("triggered()"), self.NormQuan)
@@ -569,7 +589,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         if tmp == 0:
             return 0
 
-        self.menuTable.setEnabled(True)
 
         #datamizi olusturdugumuz tabloya aktarıp, layout'a yerlestirir
         self.table = TableOperations.CreateTable(self.centralwidget, self.myDataSet.featureCount,
@@ -684,7 +703,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 except:
                     Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
         except:
-            Errors.ShowWarningMsgBox(self, u"Bu işlemlerden önce boş veriseti oluşturmanız gerekmektedir.")
+            Errors.ShowWarningMsgBox(self, u"Bu işlemlerden önce boş veriseti oluşturmanız veya veri seti "
+                                           u"yüklemeniz gerekmektedir.")
 
     def SaveFile(self):
         try:
@@ -853,12 +873,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.textEdit_Down.setText("")
 
     def CallYeniVeri(self):
-        self.menuTable.setEnabled(True)
         self.table = TableOperations.CreateTable(self.centralwidget, 0, 0, "")
         self.dockWidget_DataSet.setWidget(self.table)
         self.row_count = 0
         self.col_count = 0
         self.path = ""
+        self.CallTabloOperations()
 
     def Summaries(self):
         from collections import Counter
@@ -916,10 +936,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
             try:
                 self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f\n" %(self.dlgOstt.t_score, self.dlgOstt.pvalue))
                 self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgOstt.P_obs))
-                if abs(self.dlgOstt.t_score) > abs(self.dlgOstt.P_obs):
-                    self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+                if abs(self.dlgOstt.pvalue) > abs(self.dlgOstt.con):
+                    self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
                 else:
-                    self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
+                    self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
 
                 self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
             except Exception, e:
@@ -965,14 +985,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f"
                              %(self.dlgItstt.t_score, self.dlgItstt.pvalue))
             samples = self.dlgItstt.means.keys()
-            self.WriteOutput(samples[0]+" için ortalama : %.3f\n%s için ortalama : %.3\nf"
+            self.WriteOutput(samples[0]+" için ortalama : %.3f\n%s için ortalama : %.3f\n"
                              %(self.dlgItstt.means[samples[0]], samples[1], self.dlgItstt.means[samples[1]]))
 
             self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgItstt.P_obs))
-            if abs(self.dlgItstt.t_score) > abs(self.dlgItstt.P_obs):
-                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+            if abs(self.dlgItstt.pvalue) > abs(self.dlgItstt.con):
+                self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
             else:
-                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
+                self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
             self.WriteLog("Bağımsız İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
@@ -1004,10 +1024,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                              %(self.dlgPts.means[0], self.dlgPts.means[1]))
 
             self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgPts.P_obs))
-            if abs(self.dlgPts.t_score) > abs(self.dlgPts.P_obs):
-                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
+            if abs(self.dlgPts.pvalue) > abs(self.dlgPts.con):
+                self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
             else:
-                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
+                self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
             self.WriteLog("Bağımlı İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             if not self.dlgPts.no_exeption:
@@ -1133,7 +1153,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             
             # regression için chart çizdiren kısım
             try:
-                self.WriteLog("Şekil Şukul çizdiriliyor...")
+                self.WriteLog("Lineer regresyon grafiği çizdiriliyor...")
                 x = self.myDataSet.GetNumericValues(self.dlgLinear.getChoosenItemOnResponse())[0]
                 y = self.myDataSet.GetNumericValues(self.dlgLinear.getChoosenItemOnExplanatory())[0]
 
@@ -1152,6 +1172,98 @@ class Ui_MainWindow(QtGui.QMainWindow):
                 Errors.ShowWarningMsgBox(self, u"Lütfen zorunlu değişkenleri seçiniz!")
             else:
                 self.WriteLog("Lineer Regresyon Hesaplanamadi: " + e.message)
+
+# One Sample Wilcoxon
+
+    def SingleWilcoxon(self):
+        self.CheckLayoutParams()
+        try:
+
+            self.dlgSingleWilcoxon = StartSingleWilcoxon(self.myDataSet)
+            #self.dlgLinear.temizle()
+            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+
+            self.SetDlgParamsTitle(u"Tek Örnekli Wilcoxon Parametreleri")
+            self.gridLayout_Params.addWidget(self.dlgSingleWilcoxon, 0, 0, 1, 1)
+            self.dlgSingleWilcoxon.btnTamam.clicked.connect(self.CalculateSingleWilcoxon)
+            self.dlgSingleWilcoxon.btnYardim.clicked.connect(self.CallHelp)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+
+    def CalculateSingleWilcoxon(self):
+        self.clearOutput()
+        self.WriteLog("Tek Örnekli Wilcoxon hesaplanıyor..")
+
+
+# Two sample Wilcoxon
+    def TwoWilcoxon(self):
+        self.CheckLayoutParams()
+        try:
+
+            self.dlgTwoWilcoxon = StartTwoWilcoxon(self.myDataSet)
+            #self.dlgLinear.temizle()
+            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+
+            self.SetDlgParamsTitle(u"Çift Örnekli Wilcoxon Parametreleri")
+            self.gridLayout_Params.addWidget(self.dlgTwoWilcoxon, 0, 0, 1, 1)
+            self.dlgTwoWilcoxon.btnTamam.clicked.connect(self.CalculateTwoWilcoxon)
+            self.dlgTwoWilcoxon.btnYardim.clicked.connect(self.CallHelp)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+
+    def CalculateTwoWilcoxon(self):
+        self.clearOutput()
+        self.WriteLog("Çift Örnekli Wilcoxon hesaplanıyor..")
+
+
+
+# One Sample Proportion
+
+    def SingleProportion(self):
+        self.CheckLayoutParams()
+        try:
+
+            self.dlgSingleProportion = StartSingleProportion(self.myDataSet)
+            #self.dlgLinear.temizle()
+            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+
+            self.SetDlgParamsTitle(u"Tek Örnekli Proportion Parametreleri")
+            self.gridLayout_Params.addWidget(self.dlgSingleProportion, 0, 0, 1, 1)
+            self.dlgSingleProportion.btnTamam.clicked.connect(self.CalculateSingleProportion)
+            self.dlgSingleProportion.btnYardim.clicked.connect(self.CallHelp)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+
+    def CalculateSingleProportion(self):
+        self.clearOutput()
+        self.WriteLog("Tek Örnekli Proportion hesaplanıyor..")
+
+
+# Two sample Proportion
+    def TwoProportion(self):
+        self.CheckLayoutParams()
+        try:
+
+            self.dlgTwoProportion = StartTwoProportion(self.myDataSet)
+            #self.dlgLinear.temizle()
+            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+
+            self.SetDlgParamsTitle(u"Çift Örnekli Proportion Parametreleri")
+            self.gridLayout_Params.addWidget(self.dlgTwoProportion, 0, 0, 1, 1)
+            self.dlgTwoProportion.btnTamam.clicked.connect(self.CalculateTwoWilcoxon)
+            self.dlgTwoProportion.btnYardim.clicked.connect(self.CallHelp)
+        except:
+            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+
+
+    def CalculateTwoProportion(self):
+        self.clearOutput()
+        self.WriteLog("Çift Örnekli Proportion hesaplanıyor..")
+
+
 
 
     def CallKmeans(self):
@@ -1900,7 +2012,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuSiniflama.setTitle(_translate("MainWindow", "Sınıflama", None))
         self.menuKumeleme.setTitle(_translate("MainWindow", "Kümeleme", None))
         self.menuPreprocessing.setTitle(_translate("MainWindow", "Ön işleme", None))
-        self.menuTable.setTitle(_translate("MainWindow", "Tablo", None))
         self.menuStatistic.setTitle(_translate("MainWindow", "İstatistik", None))
         self.menuGrafikler.setTitle(_translate("MainWindow", "Grafikler", None))
         self.menuYardim.setTitle(_translate("MainWindow", "Yardım", None))
@@ -1962,6 +2073,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar T Testi", None))
         self.action_anova.setText(_translate("MainWindow", "Anova Testi", None))
         self.actionLinearRegression.setText(_translate("MainWindow", "Lineer Regresyon", None))
+
+        self.actionSingleWilcoxon.setText(_translate("MainWindow", "Tek Örnekli Wilcoxon", None))
+        self.actionTwoWilcoxon.setText(_translate("MainWindow", "Çift Örnekli Wilcoxon", None))
+        self.actionSingleProportion.setText(_translate("MainWindow", "Tek Örnekli Proportion", None))
+        self.actionTwoProportion.setText(_translate("MainWindow", "Çift Örnekli Proportion", None))
 
         self.actionHakkinda.setText(_translate("MainWindow", "Hakkında", None))
 
@@ -2146,6 +2262,29 @@ class StartLinearRegression(QtGui.QDialog, Linear_Regression.Ui_Dialog):
     def __init__(self, dataset, parent = None):
         QtGui.QDialog.__init__(self,parent)
         self.setupUi(self, dataset)
+
+
+class StartSingleWilcoxon(QtGui.QDialog, Single_Sample_Wilcoxon.Ui_Dialog):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
+
+class StartTwoWilcoxon(QtGui.QDialog, Two_Sample_Wilcoxon.Ui_Dialog):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
+
+class StartSingleProportion(QtGui.QDialog, Single_Sample_Proportion.Ui_Form):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
+
+class StartTwoProportion(QtGui.QDialog, Two_Sample_Proportion.Ui_Form):
+    def __init__(self, dataset, parent = None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self, dataset)
+
+
 
 class StartTabloOperations(QtGui.QDialog, VerisetiIslemleri.Ui_Form):
     def __init__(self, parent = None):
