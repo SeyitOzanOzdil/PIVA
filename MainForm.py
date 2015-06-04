@@ -936,10 +936,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
             try:
                 self.WriteOutput("t skoru    :  %.3f\np değeri :  %.3f\n" %(self.dlgOstt.t_score, self.dlgOstt.pvalue))
                 self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgOstt.P_obs))
-                if abs(self.dlgOstt.pvalue) > abs(self.dlgOstt.con):
-                    self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
+                if abs(self.dlgOstt.t_score) > abs(self.dlgOstt.P_obs):
+                    self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
                 else:
-                    self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
+                    self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
 
                 self.WriteLog("Tek Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
             except Exception, e:
@@ -989,10 +989,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                              %(self.dlgItstt.means[samples[0]], samples[1], self.dlgItstt.means[samples[1]]))
 
             self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgItstt.P_obs))
-            if abs(self.dlgItstt.pvalue) > abs(self.dlgItstt.con):
-                self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
+            if abs(self.dlgItstt.t_score) > abs(self.dlgItstt.P_obs):
+                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
             else:
-                self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
+                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
             self.WriteLog("Bağımsız İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             self.WriteLog("Bağımsız İki Grup t-Testi Hesaplanamadı: " + e.message)
@@ -1024,10 +1024,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
                              %(self.dlgPts.means[0], self.dlgPts.means[1]))
 
             self.WriteOutput("Pobs değeri  : %.3f\n" %(self.dlgPts.P_obs))
-            if abs(self.dlgPts.pvalue) > abs(self.dlgPts.con):
-                self.WriteOutput("p değeri, güven aralığından büyük olduğu için Null Hipotez KABUL edilir.")
+            if abs(self.dlgPts.t_score) > abs(self.dlgPts.P_obs):
+                self.WriteOutput("t skoru, P obs değerinden büyük olduğu için Null Hipotez RED edilir.")
             else:
-                self.WriteOutput("p değeri, güven aralığından küçük olduğu için Null Hipotez RED edilir.")
+                self.WriteOutput("t skoru, P obs değerinden küçük olduğu için Null Hipotez KABUL edilir.")
             self.WriteLog("Bağımlı İki Grup t Testi Başarılı Bir Şekilde Hesaplandı.")
         except Exception, e:
             if not self.dlgPts.no_exeption:

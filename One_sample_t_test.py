@@ -108,7 +108,7 @@ class Ui_Form(object):
         self.df = len(one_sample_data)-1
         self.t_score, self.pvalue = stats.ttest_1samp(one_sample_data, h0)
 
-        self.P_obs = stats.t.ppf(1-(self.con/2.0), self.df)
+        self.P_obs = stats.t.ppf(1-self.con, self.df)
 
         if self.radio_noteq.isChecked():
             pass

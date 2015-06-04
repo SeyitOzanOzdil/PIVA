@@ -161,7 +161,7 @@ class Ui_Form(object):
             elif self.radio_less.isChecked():
                 self.pvalue /= 2
 
-            self.P_obs = stats.t.ppf(1-(self.con/2.0), self.df)
+            self.P_obs = stats.t.ppf(1-self.con, self.df)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Bağımlı İki Grup t Testi", None))
