@@ -14,6 +14,7 @@ class Ui_SummariesParams(object):
         self.result = ""
         self.dataset = dataset
         self.data = self.dataset.numericFeatures
+        self.appropriate = appropriate
 
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(("gridLayout"))
@@ -100,13 +101,13 @@ class Ui_SummariesParams(object):
             self.listEleman.remove(str(source.text()))
 
     def istatistikHesapla(self):
-        self.result = "           Min   Max   "
+        self.result = "           Min    Max   "
         if "Ortalama (Mean)" in self.listStatistic:
-            self.result += "  Ort    "
+            self.result += "    Ort    "
         if "Medyan (Median)" in self.listStatistic:
             self.result += "     Medyan   "
         if "Standard Sapma" in self.listStatistic:
-            self.result += "Std    "
+            self.result += " Std    "
         if "Varyans (Variance)" in self.listStatistic:
             self.result += "   Var    "
         if "Ceyrek (Quantiles)" in self.listStatistic:
@@ -114,26 +115,44 @@ class Ui_SummariesParams(object):
             self.result += "  %50    "
             self.result += "  %75    "
             self.result += " IQR    "
-
+        """
+        if self.currentGroup:
+            group = []
+            samples = self.dataset.GetNonNumericValues(self.currentGroup)[0]
+            for sample in samples:
+                self.result += "   %s    " %(str(sample))
+                group.append([])
+        """
         self.result += "\n"
         if len(self.listEleman) > 0:
             for column in self.listEleman:
+                values = list()
+                for i in self.dataset.dataSetDic[column]:
+                    values.append(i.value)
+                """
                 values = []
                 if self.currentGroup:
-                    samples = self.appropriate[self.currentGroup]
+                    samples = self.appropriate[str(self.currentGroup).encode('utf-8')]
                     for i in range(len(samples)):
                         values.append([])
 
                     group_values, counts = self.dataset.GetNumericValues(column)
-
                     for i in range(1, len(group_values)+1):
-                        tmp = self.dataset.GetValue(self.currentGroup, i)
-                        index = samples.index(float(tmp))
-                        values[index].append(group_values[i-1])
+                        tmp = self.dataset.GetValue(column, i)
+                        print tmp
+                        #index = samples.index(float(tmp))
+                        #values[index].append(group_values[i-1])
+                        print samples.index("US")
 
                 else:
                     for i in self.dataset.dataSetDic[column]:
                         values.append(i.value)
+                """
+
+
+
+
+
                 self.result += column + "\n"
                 self.result += "         " + str(Statistical.minimum(values))
                 self.result += "   " + str(Statistical.maximum(values))
@@ -170,6 +189,52 @@ class Ui_SummariesParams(object):
                         self.result += "\n Iliski (Correlation)  : %.3f\n" %(Statistical.correlation(list1, list2))
                 else:
                     Errors.ShowWarningMsgBox(self, u"Seçili istatistik işlemleri için iki eleman seçilmelidir!")
+
+            nonNumeric = self.appropriate.keys()
+            for feature in nonNumeric:
+                value, count = self.dataset.GetNonNumericValues(feature)
+                sonuc = feature + "         "
+                for i in range(len(value)):
+                    sonuc += "   " + str(value[i]) + " ->  " +  str(count[i]) + " , "
+                sonuc = sonuc[:-3]
+                self.result += "\n" + sonuc
+
+            self.result += "\n"
+            """
+            if self.currentGroup:
+                group = []
+                samples = self.dataset.GetNonNumericValues(self.currentGroup)[0]
+
+                for column in self.listEleman:
+                    sonuc = column + "\n"
+                    asd = column
+                    for sample in range(0, len(samples)):
+
+                        group.append([])
+                        tmp = []
+
+                        group_values = self.dataset.GetNumericValues(column)[0]
+                        for i in range(0, len(group_values)):
+                            if self.dataset.GetValue(self.currentGroup, i+1) == samples[sample]:
+                                tmp.append(group_values[i])
+
+                        print "1  " + sonuc
+                        sonuc += "       " + str(samples[sample])
+                        sonuc += "      " + str(Statistical.minimum(tmp))
+                        sonuc += "      " + str(Statistical.maximum(tmp))
+                        sonuc += "      %.3f" %(float(Statistical.mean(tmp)))
+                        sonuc += "      %.3f" %(float(Statistical.standardDeviation(tmp)))
+                        sonuc += "      %.3f" %(float(Statistical.variance(tmp)))
+                        group[sample].append(tmp)
+                        asd = "__________" + sonuc
+                        print "asdasd  " + asd
+                        print "2 " + sonuc
+                        self.result += sonuc
+                        self.result += "\n"
+            """
+            self.result += "\n"
+
+
 
         else:
             Errors.ShowWarningMsgBox(self, u"Lütfen Bir Eleman Seçiniz!")

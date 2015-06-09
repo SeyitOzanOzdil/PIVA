@@ -178,10 +178,10 @@ class Ui_Form(object):
         group_values, counts = self.dataset.GetNumericValues(self.currentVar)
 
         for i in range(len(group_values)):
-            if self.dataset.GetValue(self.currentGroup, i) == samples[0]:
+            if self.dataset.GetValue(self.currentGroup, i+1) == samples[0]:
                 element = group_values[i]
                 first_data.append(element)
-            elif self.dataset.GetValue(self.currentGroup, i) == samples[1]:
+            elif self.dataset.GetValue(self.currentGroup, i+1) == samples[1]:
                 element = group_values[i]
                 second_data.append(element)
 

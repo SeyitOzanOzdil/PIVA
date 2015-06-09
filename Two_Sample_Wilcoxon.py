@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import numpy as np
+from scipy.stats import mannwhitneyu
 
 from PyQt4 import QtCore, QtGui
 
@@ -17,11 +19,12 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog, dataset):
+    def setupUi(self, Dialog, dataset, groupFeatures):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.setFixedSize(460, 313)
 
         self.dataset = dataset
+        self.appropriate = groupFeatures
 
         self.gridLayoutWidget = QtGui.QWidget(Dialog)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 10, 374, 297))
@@ -44,6 +47,7 @@ class Ui_Dialog(object):
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.radio_greater.sizePolicy().hasHeightForWidth())
+
         self.radio_greater.setSizePolicy(sizePolicy)
         self.radio_greater.setObjectName(_fromUtf8("radio_greater"))
         self.radio_noteq = QtGui.QRadioButton(self.groupBox)
@@ -60,12 +64,18 @@ class Ui_Dialog(object):
         self.horizontalLayout_7 = QtGui.QHBoxLayout()
         self.horizontalLayout_7.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
         self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
+
         self.group_combo = QtGui.QComboBox(self.gridLayoutWidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(20)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.group_combo.sizePolicy().hasHeightForWidth())
         self.group_combo.setSizePolicy(sizePolicy)
+
+        self.group_combo.addItems(groupFeatures.keys())
+        self.currentGroup = groupFeatures.keys()[0]
+        self.connect(self.group_combo, QtCore.SIGNAL('currentIndexChanged(QString)'), self.changeGroup)
+
         self.group_combo.setObjectName(_fromUtf8("group_combo"))
         self.horizontalLayout_7.addWidget(self.group_combo)
         spacerItem = QtGui.QSpacerItem(100, 67, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -74,12 +84,18 @@ class Ui_Dialog(object):
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+
         self.feature_combo = QtGui.QComboBox(self.gridLayoutWidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(20)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.feature_combo.sizePolicy().hasHeightForWidth())
         self.feature_combo.setSizePolicy(sizePolicy)
+
+        self.feature_combo.addItems(self.dataset.numericFeatures)
+        self.currentFeature = self.dataset.numericFeatures[0]
+        self.connect(self.feature_combo, QtCore.SIGNAL('currentIndexChanged(QString)'), self.changeFeature)
+
         self.feature_combo.setObjectName(_fromUtf8("feature_combo"))
         self.horizontalLayout_6.addWidget(self.feature_combo)
         spacerItem1 = QtGui.QSpacerItem(100, 67, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -87,6 +103,7 @@ class Ui_Dialog(object):
         self.verticalLayout_4.addLayout(self.horizontalLayout_6)
         self.gridLayout.addLayout(self.verticalLayout_4, 0, 1, 1, 1)
         self.verticalLayout_6 = QtGui.QVBoxLayout()
+
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
         self.label_5 = QtGui.QLabel(self.gridLayoutWidget)
         self.label_5.setObjectName(_fromUtf8("label_5"))
@@ -101,9 +118,11 @@ class Ui_Dialog(object):
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.btnTemizle = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnTemizle.setObjectName(_fromUtf8("btnTemizle"))
+        self.btnTemizle.clicked.connect(self.resetle)
         self.horizontalLayout_5.addWidget(self.btnTemizle)
         self.btnTamam = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnTamam.setObjectName(_fromUtf8("btnTamam"))
+        self.btnTamam.clicked.connect(self.TSWilcoxon)
         self.horizontalLayout_5.addWidget(self.btnTamam)
         self.btnYardim = QtGui.QPushButton(self.gridLayoutWidget)
         self.btnYardim.setObjectName(_fromUtf8("btnYardim"))
@@ -135,6 +154,38 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+
+    def resetle(self):
+        self.radio_noteq.setChecked(True)
+        self.radioDefault.setChecked(True)
+        self.group_combo.setCurrentIndex(0)
+        self.feature_combo.setCurrentIndex(0)
+
+    def changeGroup(self, var):
+        self.currentGroup = var
+
+    def changeFeature(self, var):
+        self.currentFeature = var
+
+    def TSWilcoxon(self):
+        first_data = []
+        second_data = []
+        samples = self.dataset.GetValue(self.currentGroup, 1)
+
+        group_values, counts = self.dataset.GetNumericValues(self.currentFeature)
+
+        for i in range(0, len(group_values)):
+            if self.dataset.GetValue(self.currentGroup, i+1) == samples:
+                first_data.append(group_values[i])
+            else:
+                second_data.append(group_values[i])
+
+        self.u_score, self.p_value = mannwhitneyu(first_data, second_data)
+
+        if self.radio_noteq.isChecked():
+            self.p_value *= 2
+
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Form", None))

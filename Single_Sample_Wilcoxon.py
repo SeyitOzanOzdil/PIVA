@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import numpy as np
+from scipy.stats import wilcoxon
+
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -32,9 +35,11 @@ class Ui_Dialog(object):
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.btnTemizle = QtGui.QPushButton(self.layoutWidget)
         self.btnTemizle.setObjectName(_fromUtf8("btnTemizle"))
+        self.btnTemizle.clicked.connect(self.resetle)
         self.horizontalLayout_4.addWidget(self.btnTemizle)
         self.btnTamam = QtGui.QPushButton(self.layoutWidget)
         self.btnTamam.setObjectName(_fromUtf8("btnTamam"))
+        self.btnTamam.clicked.connect(self.rankHesapla)
         self.horizontalLayout_4.addWidget(self.btnTamam)
         self.btnYardim = QtGui.QPushButton(self.layoutWidget)
         self.btnYardim.setObjectName(_fromUtf8("btnYardim"))
@@ -122,6 +127,9 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.comboBox.sizePolicy().hasHeightForWidth())
         self.comboBox.setSizePolicy(sizePolicy)
         self.comboBox.setObjectName(_fromUtf8("comboBox"))
+        self.comboBox.addItems(self.dataset.numericFeatures)
+        self.currentVar = self.dataset.numericFeatures[0]
+        self.connect(self.comboBox, QtCore.SIGNAL('currentIndexChanged(QString)'), self.changeMethod)
         self.horizontalLayout_3.addWidget(self.comboBox)
         spacerItem = QtGui.QSpacerItem(100, 67, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
@@ -129,6 +137,20 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def resetle(self):
+        self.h0_edit.setText('0.0')
+        self.radio_noteq.setChecked(True)
+        self.radioDefault.setChecked(True)
+        self.comboBox.setCurrentIndex(0)
+
+    def changeMethod(self, var):
+        self.currentVar = var
+
+    def rankHesapla(self):
+        self.z_statistic, self.p_value = wilcoxon(np.array(self.dataset.GetNumericValues(self.currentVar)[0])
+                                                  - float(self.h0_edit.text()))
+
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Form", None))

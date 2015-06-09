@@ -44,6 +44,7 @@ import One_sample_t_test
 import Two_sample_t_test
 import Paired_t_test
 import Anova
+import Chi2
 import Linear_Regression
 import Single_Sample_Wilcoxon
 import Two_Sample_Wilcoxon
@@ -290,6 +291,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_anova = QtGui.QAction(MainWindow)
         self.action_anova.setObjectName(_fromUtf8("action_anova"))
 
+        self.action_chi = QtGui.QAction(MainWindow)
+        self.action_chi.setObjectName(_fromUtf8("action_chi"))
+
         self.actionSingleWilcoxon = QtGui.QAction(MainWindow)
         self.actionSingleWilcoxon.setObjectName(_fromUtf8("actionSingleWilcoxon"))
 
@@ -312,6 +316,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuStatistic.addAction(self.action_itstt)
         self.menuStatistic.addAction(self.action_pts)
         self.menuStatistic.addAction(self.action_anova)
+        self.menuStatistic.addAction(self.action_chi)
+
 
         self.menuStatistic.addSeparator()
         self.menuStatistic.addAction(self.actionSingleWilcoxon)
@@ -542,6 +548,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.connect(self.action_itstt, QtCore.SIGNAL("triggered()"), self.Itstt)
         self.connect(self.action_pts, QtCore.SIGNAL("triggered()"), self.Pts)
         self.connect(self.action_anova, QtCore.SIGNAL("triggered()"), self.Anova)
+        self.connect(self.action_chi, QtCore.SIGNAL("triggered()"), self.Chi2)
         self.connect(self.actionLinearRegression, QtCore.SIGNAL("triggered()"), self.LinearRegression)
         self.connect(self.actionSingleWilcoxon, QtCore.SIGNAL("triggered()"), self.SingleWilcoxon)
         self.connect(self.actionTwoWilcoxon, QtCore.SIGNAL("triggered()"), self.TwoWilcoxon)
@@ -886,18 +893,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         features = self.myDataSet.features
         appropriate = {}
-        others = []
         for i in features:
             if i in self.myDataSet.numericFeatures:
                 values = self.myDataSet.GetNumericValues(i)[0]
             else:
                 values = self.myDataSet.GetNonNumericValues(i)[0]
             tally = Counter(values)
-            if 1 < len(tally) < 5:
+            if 1 < len(tally) < 10:
                 appropriate[i] = tally.keys()
-            else:
-                if i in self.myDataSet.numericFeatures:
-                    others.append(i)
         try:
             self.dlgSummaries = StartDlgSummaries(self.myDataSet, appropriate)
             self.SetDlgParamsTitle(u"İstatistiksel Özet Parametreleri")
@@ -964,6 +967,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             else:
                 if i in self.myDataSet.numericFeatures:
                     others.append(i)
+
         if len(appropriate) == 0:
             Errors.ShowWarningMsgBox(self, u"Veri seti bu test için uygun değildir!")
 
@@ -1125,6 +1129,35 @@ class Ui_MainWindow(QtGui.QMainWindow):
             self.WriteLog("Anova Testi Hesaplanamadı: " + e.message)
 
 
+    def Chi2(self):
+        self.CheckLayoutParams()
+        try:
+            self.dlgChi2 = Chi2.chi2(self.myDataSet, self.table.rowCount(), self.table.columnCount())
+            self.WriteOutput("Pearson test istatistiği(Q) =  %.3f" %((self.dlgChi2[0])))
+            self.WriteOutput("Serbestlik Derecesi(df) = "+ str(self.dlgChi2[1]))
+            self.WriteOutput("p değeri = %.3f" %(float((self.dlgChi2[2]))))
+            if self.dlgChi2[2] < 0.1:
+                self.WriteOutput("\nNull hipotezi 0.1 güven aralığında reddedilir.")
+            else:
+                self.WriteOutput("\nNull hipotezi 0.1 güven aralığında kabul edilir.")
+
+            if self.dlgChi2[2] < 0.05:
+                self.WriteOutput("\nNull hipotezi 0.05 güven aralığında reddedilir.")
+            else:
+                self.WriteOutput("\nNull hipotezi 0.05 güven aralığında kabul edilir.")
+
+            if self.dlgChi2[2] < 0.01:
+                self.WriteOutput("Null hipotezi 0.01 güven aralığında reddedilir.")
+            else:
+                self.WriteOutput("\nNull hipotezi 0.01 güven aralığında kabul edilir.")
+        except Exception, e:
+            self.WriteLog("Kikare Testi Hesaplanamadı: " + e.message)
+            if self.myDataSet:
+                Errors.ShowWarningMsgBox(self, u"Veriseti en az 2x2 boyutlarında olmalıdır!")
+            else:
+                Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz yada yeni oluşturunuz!")
+
+
     def LinearRegression(self):
         self.CheckLayoutParams()
         try:
@@ -1180,10 +1213,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         try:
 
             self.dlgSingleWilcoxon = StartSingleWilcoxon(self.myDataSet)
-            #self.dlgLinear.temizle()
-            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
 
-            self.SetDlgParamsTitle(u"Tek Örnekli Wilcoxon Parametreleri")
+            self.SetDlgParamsTitle(u"Tek Örnekli Wilcoxon Testi Parametreleri")
             self.gridLayout_Params.addWidget(self.dlgSingleWilcoxon, 0, 0, 1, 1)
             self.dlgSingleWilcoxon.btnTamam.clicked.connect(self.CalculateSingleWilcoxon)
             self.dlgSingleWilcoxon.btnYardim.clicked.connect(self.CallHelp)
@@ -1193,31 +1224,59 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def CalculateSingleWilcoxon(self):
         self.clearOutput()
-        self.WriteLog("Tek Örnekli Wilcoxon hesaplanıyor..")
+        self.WriteLog("Tek Örnekli Wilcoxon Testi hesaplanıyor..")
+
+        try:
+            self.WriteOutput("Z istatistiği   :  %.3f\np değeri       :   %.3f" %(self.dlgSingleWilcoxon.z_statistic,
+                                                                                 self.dlgSingleWilcoxon.p_value))
+            self.WriteLog("Tek Örnekli Wilcoxon Testi Başarılı Bir Şekilde Hesaplandı.")
+
+        except Exception, e:
+            self.WriteLog("Tek Örnekli Wilcoxon Testi Hesaplanamadı: " + e.message)
 
 
 # Two sample Wilcoxon
     def TwoWilcoxon(self):
+
+        from collections import Counter
         self.CheckLayoutParams()
-        try:
+        features = self.myDataSet.features
+        appropriate = {}
 
-            self.dlgTwoWilcoxon = StartTwoWilcoxon(self.myDataSet)
-            #self.dlgLinear.temizle()
-            #self.dlgLinear.addITem(self.myDataSet.numericFeatures)
+        for i in features:
+            if i in self.myDataSet.numericFeatures:
+                values = self.myDataSet.GetNumericValues(i)[0]
+            else:
+                values = self.myDataSet.GetNonNumericValues(i)[0]
+            tally = Counter(values)
+            if len(tally) == 2:
+                appropriate[i] = tally.keys()
+        if len(appropriate) != 0:
+            try:
 
-            self.SetDlgParamsTitle(u"Çift Örnekli Wilcoxon Parametreleri")
-            self.gridLayout_Params.addWidget(self.dlgTwoWilcoxon, 0, 0, 1, 1)
-            self.dlgTwoWilcoxon.btnTamam.clicked.connect(self.CalculateTwoWilcoxon)
-            self.dlgTwoWilcoxon.btnYardim.clicked.connect(self.CallHelp)
-        except:
-            Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+                self.dlgTwoWilcoxon = StartTwoWilcoxon(self.myDataSet, appropriate)
+
+                self.SetDlgParamsTitle(u"Çift Örnekli Wilcoxon Testi Parametreleri")
+                self.gridLayout_Params.addWidget(self.dlgTwoWilcoxon, 0, 0, 1, 1)
+                self.dlgTwoWilcoxon.btnTamam.clicked.connect(self.CalculateTwoWilcoxon)
+                self.dlgTwoWilcoxon.btnYardim.clicked.connect(self.CallHelp)
+            except:
+                Errors.ShowWarningMsgBox(self, u"Lütfen veriseti yükleyiniz!")
+        else:
+            Errors.ShowWarningMsgBox(self, u"Veri seti bu test için uygun değildir!")
 
 
     def CalculateTwoWilcoxon(self):
         self.clearOutput()
-        self.WriteLog("Çift Örnekli Wilcoxon hesaplanıyor..")
+        self.WriteLog("Çift Örnekli Wilcoxon Testi hesaplanıyor..")
 
+        try:
+            self.WriteOutput("U istatistiği   :  %.3f\np değeri       :   %.3f"
+                             %(self.dlgTwoWilcoxon.u_score, self.dlgTwoWilcoxon.p_value))
+            self.WriteLog("Çift Örnekli Wilcoxon Testi Başarılı Bir Şekilde Hesaplandı.")
 
+        except Exception, e:
+            self.WriteLog("Çift Örnekli Wilcoxon Testi Hesaplanamadı: " + e.message)
 
 # One Sample Proportion
 
@@ -2072,6 +2131,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.action_itstt.setText(_translate("MainWindow", "Bağımsız İki Grup T Testi", None))
         self.action_pts.setText(_translate("MainWindow", "Bağımlı Gruplar T Testi", None))
         self.action_anova.setText(_translate("MainWindow", "Anova Testi", None))
+        self.action_chi.setText(_translate("MainWindow", "Kikare Testi", None))
         self.actionLinearRegression.setText(_translate("MainWindow", "Lineer Regresyon", None))
 
         self.actionSingleWilcoxon.setText(_translate("MainWindow", "Tek Örnekli Wilcoxon", None))
@@ -2270,9 +2330,9 @@ class StartSingleWilcoxon(QtGui.QDialog, Single_Sample_Wilcoxon.Ui_Dialog):
         self.setupUi(self, dataset)
 
 class StartTwoWilcoxon(QtGui.QDialog, Two_Sample_Wilcoxon.Ui_Dialog):
-    def __init__(self, dataset, parent = None):
+    def __init__(self, dataset, groupFeatures, parent = None):
         QtGui.QDialog.__init__(self,parent)
-        self.setupUi(self, dataset)
+        self.setupUi(self, dataset, groupFeatures)
 
 class StartSingleProportion(QtGui.QDialog, Single_Sample_Proportion.Ui_Form):
     def __init__(self, dataset, parent = None):
